@@ -1,0 +1,30 @@
+<html>
+    <body>
+
+        Puede elegir entre  mandar un documento XML al servidor, o una foto, o un documento de texto TXT
+
+        <br />
+        <form action="webservice.php?a=1&b=11" method="post" enctype="multipart/form-data">
+            <label for="p">XML:</label>
+            <input type="file" name="p" id="p" />
+            <br />
+            <!--<input type="submit" name="submit" value="Submit" size="40"/>-->
+            <button type="submit"><FONT size="4">Procesar el XML</FONT></button>
+        </form>
+
+        <form action="webservice.php?a=1&b=12" method="post" enctype="multipart/form-data">
+            <label for="i">FOTO JPG:</label>
+            <input type="file" name="i" id="i" />
+            <br />
+            <button type="submit"><FONT size="4">Procesar la FOTO</FONT></button>
+        </form>
+
+        <form action="webservice.php?a=1&b=13" method="post" enctype="multipart/form-data">
+            <label for="l">DOC TXT:</label>
+            <input type="file" name="l" id="l" />
+            <br />
+            <button type="submit"><FONT size="4">Procesar el LOG</FONT></button>
+        </form>
+
+    </body>
+</html> 
