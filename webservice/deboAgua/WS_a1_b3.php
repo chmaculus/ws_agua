@@ -147,6 +147,7 @@
 					
 					$RETURN .= "</VI_AGUA_A_TABLET>";
 					
+					$RETURN = utf8_encode($RETURN);
 						
 				// Recuperamos el numero de la tablet que hizo este pedido, asi se marca en la BDD que esta tablet se llevo estas rutas:
 					if(isset($_REQUEST['c'])){

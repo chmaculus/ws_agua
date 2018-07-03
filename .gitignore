@@ -1,3 +1,9 @@
 /config.ini
 /pfs*.ini
 /nbproject/
+deboagua\*
+logagua\.txt
+
+log\.txt
+
+log/
