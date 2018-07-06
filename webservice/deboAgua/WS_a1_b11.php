@@ -74,53 +74,54 @@
 						$RESP_PRE_EXISTENCIA = sqlsrv_query($CONEXION, $PRE_EXISTENCIA, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 						$buffer .= "<RESP_REQ_PRE_EXIST>". sqlsrv_num_rows($RESP_PRE_EXISTENCIA) . "</RESP_REQ_PRE_EXIST>";
 						
-						// Si no hay entrada:
-						if(sqlsrv_num_rows($RESP_PRE_EXISTENCIA) <= 0){
-                                                    if (is_numeric($LEAC) == true && $LEAC > 0) {
-							$SQL = "INSERT INTO AGUA_MEDICION 
-										(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE) 
-									VALUES 
-										(".$ID_MED.", '".$PER."', ".$LEAN.", ".$LEAC.", -1, '".$FECHA."', ".$ID_ERROR.", '".$OBS."', ".$ID_OPE.");";
-						
-							$buffer .= "<REQ_INSERT>". $SQL . "</REQ_INSERT>";
+						if ((is_numeric($LEAC) == true && $LEAC > 0) || !empty($OBS) || $ID_ERROR != 0) {
+
+							// Si no hay entrada:
+							if(sqlsrv_num_rows($RESP_PRE_EXISTENCIA) <= 0) {
+	                                                    
+								$SQL = "INSERT INTO AGUA_MEDICION 
+											(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE) 
+										VALUES 
+											(".$ID_MED.", '".$PER."', ".$LEAN.", ".$LEAC.", -1, '".$FECHA."', ".$ID_ERROR.", '".$OBS."', ".$ID_OPE.");";
 							
-							$RESP_INSERT = sqlsrv_query($CONEXION, $SQL);
-							
-							if(!isset($RESP_INSERT)){
-								sqlsrv_query($CONEXION, "ROLLBACK TRANSACTION");
-							}
-							
-							$buffer .= "<RESP_REQ_INSERT>Successfull INSERT: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_INSERT>";
-							$RETURN .= "<RESP_REQ_INSERT>Successfull INSERT: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_INSERT>";
-                                                    }
-						}else{
-                                                        // Hacemos el update si y solamente si el nuevo valor tiene valores "correctos":
-                                                        if (is_numeric($LEAC) == true && $LEAC > 0) {
-                                                            $SQL = "UPDATE AGUA_MEDICION 
-                                                                            SET 
-                                                                                    LEAN = ".$LEAN.",
-                                                                                    LEAC = ".$LEAC.",
-                                                                                    VAL = -1, 
-                                                                                    FECHA_TOMA = '".$FECHA."',
-                                                                                    ID_ERROR = ".$ID_ERROR.",
-                                                                                    OBSERVACION = '".$OBS."',
-                                                                                    ID_OPE = ".$ID_OPE." 
-                                                                            WHERE 
-                                                                                    ID_MED = ".$ID_MED." AND
-                                                                                    PER = '".$PER."';";
+								$buffer .= "<REQ_INSERT>". $SQL . "</REQ_INSERT>";
+								
+								$RESP_INSERT = sqlsrv_query($CONEXION, $SQL);
+								
+								if(!isset($RESP_INSERT)){
+									sqlsrv_query($CONEXION, "ROLLBACK TRANSACTION");
+								}
+								
+								$buffer .= "<RESP_REQ_INSERT>Successfull INSERT: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_INSERT>";
+								$RETURN .= "<RESP_REQ_INSERT>Successfull INSERT: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_INSERT>";
+	                                                    
+							} else {
+	                                                     
+	                                $SQL = "UPDATE AGUA_MEDICION SET 
+                                        LEAN = ".$LEAN.",
+                                        LEAC = ".$LEAC.",
+                                        VAL = -1, 
+                                        FECHA_TOMA = '".$FECHA."',
+                                        ID_ERROR = ".$ID_ERROR.",
+                                        OBSERVACION = '".$OBS."',
+                                        ID_OPE = ".$ID_OPE." 
+                                		WHERE 
+                                        ID_MED = ".$ID_MED." AND
+                                        PER = '".$PER."';";
 
-                                                            $buffer .= "<REQ_UPDATE>". $SQL . "</REQ_UPDATE>";
+                                    $buffer .= "<REQ_UPDATE>". $SQL . "</REQ_UPDATE>";
 
-                                                            $RESP_UPDATE = sqlsrv_query($CONEXION,$SQL);
+                                    $RESP_UPDATE = sqlsrv_query($CONEXION,$SQL);
 
-                                                            if(!isset($RESP_UPDATE)){
-                                                                    sqlsrv_query($CONEXION,"ROLLBACK TRANSACTION");
-                                                            }
+                                    if(!isset($RESP_UPDATE)){
+                                            sqlsrv_query($CONEXION,"ROLLBACK TRANSACTION");
+                                    }
 
-                                                            $buffer .= "<RESP_REQ_UPDATE>Successfull UPDATE: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_UPDATE>";
-                                                            $RETURN .= "<RESP_REQ_UPDATE>Successfull UPDATE: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_UPDATE>";
-                                                        }
-                                                }
+                                    $buffer .= "<RESP_REQ_UPDATE>Successfull UPDATE: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_UPDATE>";
+                                    $RETURN .= "<RESP_REQ_UPDATE>Successfull UPDATE: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_UPDATE>";
+	                                                        
+	                        }
+						}
 						
 					// Cerramos las balizas XML:
 						$RETURN .= "</MEDICION>";	
