@@ -14,8 +14,30 @@ $ERROR = "";
 $buffer = "";
 
 
-try {
 
+/*
+$name_file = "log\\log_" . date("Y-m") . ".txt";
+
+$file = fopen($name_file, "a+");
+fwrite($file, "request: ".print_r($_REQUEST,true));
+fclose($file);
+*/
+
+log_this("log/aa.log",date("H:i:s")."\n".print_r($_REQUEST,true));
+log_this("log/aa.log","a: ".$GET["a"]."\n");
+log_this("log/aa.log","b: ".$GET["b"]."\n");
+log_this("log/aa.log","r: ".$GET["r"]."\n");
+
+/*
+log(print_r("request: ".$_REQUEST),true);
+
+log(print_r("post: ".$_POST),true);
+
+log(print_r("get: ".$_GET),true);
+*/
+
+try {
+log_this("log/bb.log",date("H:i:s")." try\n");
     /* $RETURN .= '<?xml version="1.0" encoding="ISO-8859-1"?>'; */
 
     // VARIABLES:
@@ -35,6 +57,7 @@ try {
     $C_LOG = "";
 
     $handle = @fopen("config.ini", "r");
+    log_this("log/bb.log",date("H:i:s")." config\n");
     if ($handle) {
         while (($buffer = fgets($handle, 4096)) !== false) {
             $tab = explode("=", $buffer);
@@ -68,7 +91,7 @@ try {
         fclose($handle);
     }
 
-
+log_this("log/bb.log",date("H:i:s")." end while\n");
 
 
 
@@ -94,6 +117,8 @@ try {
             $file = fopen($name_file, "r");
             $flujo_leido = fread($file, 500);
             fclose($file);
+
+            log_this("log/bb.log",date("H:i:s")." pfs\n");
 
             $iv = mcrypt_create_iv(mcrypt_get_block_size(MCRYPT_TripleDES, MCRYPT_MODE_CBC), MCRYPT_DEV_RANDOM);
             $cadena_decriptada = decrypt($flujo_leido, $key);
@@ -125,23 +150,50 @@ try {
               mssql_query($CONEXION, "BEGIN TRANSACTION");
              */
 
+          $servidor = "10.231.45.205";
+          $usuario = "debo";
+          $pwd = "debo";
+          $basededatos = "DOSSA_07022022";
+
             //echo $servidor."<br/>";
             //echo $usuario."<br/>";
             //echo $pwd."<br/>";
             //echo $basededatos."<br/>";
 
-            $CONEXION = sqlsrv_connect($servidor, array("UID" => $usuario, "PWD" => $pwd, "Database" => $basededatos));
+            $server = "10.231.45.205";
+            $username ="debo";
+            $password ="debo";
+            $database ="DOSSA_08112021";
+
+            $connectionInfo = array("Database"=>$database, "UID"=>$username, "PWD"=>$password);
+
+            //$connectionInfo = array( "Database"=>"DOSSA_08112021", "UID"=>"debo", "PWD"=>"debo");
+            $CONEXION = sqlsrv_connect( $server, $connectionInfo );
+
+
+            //$CONEXION = sqlsrv_connect($servidor, array("UID" => $usuario, "PWD" => $pwd, "Database" => $basededatos));
             if (!$CONEXION) {
                 echo "<error>Connection could not be established.</error>";
+                log_this("log/bb.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+                log_this("log/bb.log"," exit\n");
                 exit;
             }
+            if( $CONEXION ) {
+                 echo "Conexión establecida.<br />";
+            }else{
+                 echo "Conexión no se pudo establecer.<br />";
+                 log_this("log/bb.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+            }
+
             sqlsrv_begin_transaction($CONEXION);
 
             //*****************************************************
             //*****************************************************
 
             if (isset($_REQUEST['b'])) {
-                require(".\\webservice\\deboAgua\\WS_a1_b" . $_REQUEST['b'] . ".php");
+                $var1=".\\webservice\\deboAgua\\WS_a1_b" . $_REQUEST['b'] . ".php";
+                log_this("log/bb.log", date("H:i:s")."\nvar1: ".$var1);
+                require($var1);
             } else {
                 // Si B no está:
                 $RETURN .= "<PARAMETROS>";
@@ -450,7 +502,7 @@ try {
         echo trim('<?xml version="1.0" encoding="ISO-8859-1"?><e>WEBSERVICE ONLINE</e>');
     }
 
-    $name_file = "log\\log_" . date("Y-m-d_H-i") . ".txt";
+    $name_file = "log\\log_" . date("Y-m") . ".txt";
 
     if (file_exists("log\\") == false) {
         mkdir("log\\", 0777);
@@ -461,7 +513,7 @@ try {
     fclose($file);
 } catch (Exception $e) {
 
-    $name_file = ".\\errors\\error_report_" . date("Y-m-d_H-i") . ".txt";
+    $name_file = ".\\errors\\error_report_" . date("Y-m") . ".txt";
     $file = fopen($name_file, "w+");
     fwrite($file, "PHP says: " . $e . "<br /><br />" . $ERROR);
     fclose($file);
