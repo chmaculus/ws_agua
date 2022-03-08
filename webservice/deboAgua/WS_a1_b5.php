@@ -20,8 +20,9 @@
 					$RETURN .= "<CONTROL_OPE>";
 					
 				// Los GRUPOS ACEPTADOS SON: grupo1-todos Y grupo4-todosSalvoSGR1
-					$SQL = "SELECT * FROM USUARIOS WHERE NOM='". $log ."' AND PWD='". $pas ."' AND GRP IN (1,3,4)";
-                                        file_put_contents("logagua.txt", $SQL,8);
+					//$SQL = "SELECT * FROM USUARIOS WHERE NOM='". $log ."' AND PWD='". $pas ."' AND GRP IN (1,3,4)";
+					$SQL = "SELECT * FROM USUARIOS WHERE COD=0";
+                                        file_put_contents("logs/logagua.txt", "\n".date("H:i:s")."\n".$SQL,8);
 					$RES = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 					if(!isset($RES)){

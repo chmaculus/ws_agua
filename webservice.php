@@ -114,9 +114,9 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
             $key = "Fs2goO0rcf1oat1U";
 
             $name_file = "pfs" . $_REQUEST['a'] . ".ini";
-            $file = fopen($name_file, "r");
-            $flujo_leido = fread($file, 500);
-            fclose($file);
+            //$file = fopen($name_file, "r");
+            //$flujo_leido = fread($file, 500);
+            //fclose($file);
 
             log_this("log/bb.log",date("H:i:s")." pfs\n");
 
@@ -179,7 +179,7 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 exit;
             }
             if( $CONEXION ) {
-                 echo "Conexión establecida.<br />";
+                 //echo "Conexión establecida.<br />";
             }else{
                  echo "Conexión no se pudo establecer.<br />";
                  log_this("log/bb.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
