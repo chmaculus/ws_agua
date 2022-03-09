@@ -17,10 +17,11 @@
 
 		$RETURN .= "<VISTA_AGUA_RUTAS>";
 		$RETURN .= "<CNT>".sqlsrv_num_rows($VI_AGUA_RUTAS)." entradas</CNT>";
-		
+
+		$arrayaa=array();		
 		$tabla_PK = array();
 		while ($REG_VI_AGUA_RUTAS = sqlsrv_fetch_array($VI_AGUA_RUTAS)){
-			$arrayaa[]=$REG_VI_AGUA_RUTAS;
+			$arrayaa[]=$REG_VI_AGUA_RUTAS."\n";
 		
 			// Test:
 				//$REG_VI_AGUA_RUTAS = array("ID"=>3589, "DET"=> "Jean < Pierre & Josette", "ULTPER"=>"2011/09", "ID_TABLET"=>76130);
@@ -67,8 +68,8 @@
 		}
 		
 		$RETURN .= "</VISTA_AGUA_RUTAS>";
-		//log_this("log/ws_a1_b1_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
-		//log_this("log/ws_a1_b1_array.log",date("H:i:s")."\n".print_r($$arrayaa,true)."\n\n");
+		log_this("log/ws_a1_b1_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
+		log_this("log/ws_a1_b1_array.log",date("H:i:s")."\n".print_r($arrayaa,true)."\n\n");
 
 	}
 ?>

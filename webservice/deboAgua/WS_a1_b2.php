@@ -86,7 +86,7 @@
 						}
 					} // end while
 					
-					
+					log_this("log/ws_a1_b2_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
 					
 					$tabla_PK = array();
 					while ($REG_AGUA_TOMA_OPE = sqlsrv_fetch_array($AGUA_TOMA_OPE, SQLSRV_FETCH_ASSOC)){
