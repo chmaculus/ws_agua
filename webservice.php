@@ -25,6 +25,8 @@ fclose($file);
 
 log_this("log/aa.log",date("H:i:s")."\n".print_r($_REQUEST,true));
 
+log_this("log/aa.log",date("H:i:s")."\n-".$_GET["b"]."-\n");
+
 try {
 log_this("log/bb.log",date("H:i:s")." try\n");
     /* $RETURN .= '<?xml version="1.0" encoding="ISO-8859-1"?>'; */
