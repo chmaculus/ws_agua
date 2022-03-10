@@ -487,7 +487,7 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
         sqlsrv_commit($CONEXION);
         sqlsrv_close($CONEXION);
 
-        if($_POST['b']!='1j'){
+        if($_POST['b']!='1j' or $_POST['b']!='3j' or $_POST['b']!='4j'){
             echo trim('<?xml version="1.0" encoding="ISO-8859-1"?>' . $RETURN);
         }else{
             echo $RETURN;

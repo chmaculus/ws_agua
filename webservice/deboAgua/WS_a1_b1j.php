@@ -25,7 +25,6 @@
 		$tabla_PK = array();
 		while ($REG_VI_AGUA_RUTAS = sqlsrv_fetch_array($VI_AGUA_RUTAS,SQLSRV_FETCH_ASSOC)){
 			array_push($array_rutas, $REG_VI_AGUA_RUTAS);
-			log_this("log/ws_a1_b1j_array2.log",date("H:i:s")."\n".print_r($REG_VI_AGUA_RUTAS,true)."\n--------\n");
 		
 			// Test:
 				//$REG_VI_AGUA_RUTAS = array("ID"=>3589, "DET"=> "Jean < Pierre & Josette", "ULTPER"=>"2011/09", "ID_TABLET"=>76130);

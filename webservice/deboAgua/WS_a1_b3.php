@@ -10,6 +10,7 @@
 
 		// Buscamos las rutas que mostrar:
 			$SQL = "SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN";
+			log_this("log/ws_a1_b3j.log",date("H:i:s")."\n".$SQL."\n\n");
 			$VI_AGUA_A_TABLET = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 			if(!isset($VI_AGUA_A_TABLET)){
