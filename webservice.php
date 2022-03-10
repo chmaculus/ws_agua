@@ -24,17 +24,6 @@ fclose($file);
 */
 
 log_this("log/aa.log",date("H:i:s")."\n".print_r($_REQUEST,true));
-log_this("log/aa.log","a: ".$GET["a"]."\n");
-log_this("log/aa.log","b: ".$GET["b"]."\n");
-log_this("log/aa.log","r: ".$GET["r"]."\n");
-
-/*
-log(print_r("request: ".$_REQUEST),true);
-
-log(print_r("post: ".$_POST),true);
-
-log(print_r("get: ".$_GET),true);
-*/
 
 try {
 log_this("log/bb.log",date("H:i:s")." try\n");
@@ -496,8 +485,12 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
         sqlsrv_commit($CONEXION);
         sqlsrv_close($CONEXION);
 
-
-        echo trim('<?xml version="1.0" encoding="ISO-8859-1"?>' . $RETURN);
+        if($_POST["b"]!="1j"){
+            echo trim('<?xml version="1.0" encoding="ISO-8859-1"?>' . $RETURN);
+        }else{
+            echo $RETURN;
+        }
+        
     } else {
         echo trim('<?xml version="1.0" encoding="ISO-8859-1"?><e>WEBSERVICE ONLINE</e>');
     }
