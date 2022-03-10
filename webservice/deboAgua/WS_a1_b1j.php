@@ -16,8 +16,9 @@
 	else {
 
 		$RETURN .= "<VISTA_AGUA_RUTAS>";
-		$RETURN .= "<CNT>".sqlsrv_num_rows($VI_AGUA_RUTAS)." entradas</CNT>";
-		$array_entradas=array('entradas' => sqlsrv_num_rows($VI_AGUA_RUTAS));
+		$entradas=sqlsrv_num_rows($VI_AGUA_RUTAS);
+		$RETURN .= "<CNT>".$entradas." entradas</CNT>";
+		$array_entradas=array('CNT' => $entradas);
 		//$array_entradas .= "<CNT>".sqlsrv_num_rows($VI_AGUA_RUTAS)." entradas</CNT>";
 
 		$array_rutas=array();		
@@ -71,15 +72,13 @@
 		}
 		
 		$RETURN .= "</VISTA_AGUA_RUTAS>";
-		//$array_return=array('VISTA_AGUA_RUTAS' => array());
-		$array_n=array_merge($array_entradas,$array_rutas);
-		//array_push($array_return,$array_entradas);
-		//array_push($array_return,$array_rutas);
-		$RETURN=json_encode($array_n);
-		log_this("log/ws_a1_b1j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
-		log_this("log/ws_a1_b1j_array.log",date("H:i:s")."\n".print_r($array_entradas,true)."\n\n");
-		log_this("log/ws_a1_b1j_arrayn.log",date("H:i:s")."\n".print_r($array_n,true)."\n\n");
-		log_this("log/ws_a1_b1j_array_rutas.log",date("H:i:s")."\n".print_r($array_rutas,true)."\n\n");
+		$array_return=array('CNT'=> $entradas, 'RUTA' => $array_rutas);
+
+		$RETURN=json_encode($array_return);
+		// log_this("log/ws_a1_b1j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
+		// log_this("log/ws_a1_b1j_array.log",date("H:i:s")."\n".print_r($array_entradas,true)."\n\n");
+		// log_this("log/ws_a1_b1j_arrayn.log",date("H:i:s")."\n".print_r($array_n,true)."\n\n");
+		// log_this("log/ws_a1_b1j_array_rutas.log",date("H:i:s")."\n".print_r($array_rutas,true)."\n\n");
 
 
 
