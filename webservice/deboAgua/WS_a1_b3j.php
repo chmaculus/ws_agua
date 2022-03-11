@@ -82,7 +82,7 @@
 						$REG_VI_AGUA_A_TABLET['MZNA']=trim($REG_VI_AGUA_A_TABLET['MZNA']);
 			
 						/*CASA-CASA*/
-						$RETURN .= "<CASA>".trim($REG_VI_AGUA_A_TABLET['CASA'])."</CASA>";	
+						$REG_VI_AGUA_A_TABLET['CASA']=trim($REG_VI_AGUA_A_TABLET['CASA']);
 			
 						/*PISO-PISO*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['PISO'])) == false) {
@@ -168,12 +168,9 @@
 				
 			}//end while
 			
-			// log_this("log/ws_a1_b1j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
-			 log_this("log/ws_a1_b3j_medicion.log",date("H:i:s")."\n".print_r($array_medicion,true)."\n\n");
-			 log_this("log/ws_a1_b3j_error.log",date("H:i:s")."\n".print_r($array_error,true)."\n\n");
-			 log_this("log/ws_a1_b3j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
-			// log_this("log/ws_a1_b1j_arrayn.log",date("H:i:s")."\n".print_r($array_n,true)."\n\n");
-			// log_this("log/ws_a1_b1j_array_rutas.log",date("H:i:s")."\n".print_r($array_rutas,true)."\n\n");
+			 // log_this("log/ws_a1_b3j_medicion.log",date("H:i:s")."\n".print_r($array_medicion,true)."\n\n");
+			 // log_this("log/ws_a1_b3j_error.log",date("H:i:s")."\n".print_r($array_error,true)."\n\n");
+			 // log_this("log/ws_a1_b3j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
 
 	}		
 ?>
