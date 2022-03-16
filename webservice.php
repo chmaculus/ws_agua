@@ -15,17 +15,7 @@ $buffer = "";
 
 
 
-/*
-$name_file = "log\\log_" . date("Y-m") . ".txt";
-
-$file = fopen($name_file, "a+");
-fwrite($file, "request: ".print_r($_REQUEST,true));
-fclose($file);
-*/
-
-log_this("log/aa.log",date("H:i:s")."\n".print_r($_REQUEST,true));
-
-log_this("log/aa.log",date("H:i:s")."\n-".$_GET["b"]."-\n");
+log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 
 try {
 log_this("log/bb.log",date("H:i:s")." try\n");
@@ -82,13 +72,19 @@ log_this("log/bb.log",date("H:i:s")." try\n");
         fclose($handle);
     }
 
-log_this("log/bb.log",date("H:i:s")." end while\n");
+    log_this("log/bb.log",date("H:i:s")." end while\n");
+
+
+    #16j
+    if (!isset($_REQUEST['a']) and is_array($_REQUEST)) {
+        log_this("log/bb.log",date("H:i:s")." j16\n");        
+    }
+
+
 
 
 
     if (isset($_REQUEST['a'])) {
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
         ////////////////////////////////////
@@ -170,7 +166,7 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 exit;
             }
             if( $CONEXION ) {
-                 //echo "Conexión establecida.<br />";
+                 log_this("log/bb.log","Conexión establecida\n");
             }else{
                  echo "Conexión no se pudo establecer.<br />";
                  log_this("log/bb.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
@@ -201,6 +197,16 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 $RETURN .= "</PARAMETROS>";
             }
         } // END A == 1 --- DEBO AGUA
+
+
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
         ///////////////////////////////////////
@@ -261,6 +267,13 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 $RETURN .= "</PARAMETROS>";
             }
         } // END A == 2 --- DEBO SANCION
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
         //////////////////////////////////////////
@@ -317,6 +330,14 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 $RETURN .= "</PARAMETROS>";
             }
         } // END A == 3 --- DEBO INVENTARIO
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
         ////////////////////////////////////////
@@ -367,6 +388,15 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 $RETURN .= "</PARAMETROS>";
             }
         } // END A == 4 --- DEBO RECOVERY
+
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
         //////////////////////////////////////
@@ -422,6 +452,14 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
                 $RETURN .= "</PARAMETROS>";
             }
         } // END A == 5 --- DEBO COMPRA
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
 /////////////////////////////////////////////////////////////////////////////////////////////////////		
         ///////////////////////////////////////
@@ -483,11 +521,18 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
             }
         } // END A == 5 --- DEBO COMPRA
         // AL FINAL:
-
         sqlsrv_commit($CONEXION);
         sqlsrv_close($CONEXION);
+        #------------------------------------------------------------------
 
-        if($_POST['b']=='1j' or $_POST['b']=='3j' or $_POST['b']=='4j'){
+
+
+
+
+
+
+
+        if($_REQUEST['b']=='1j' or $_REQUEST['b']=='3j' or $_REQUEST['b']=='4j' or $_REQUEST['b']=='16j' OR is_array($_POST) OR is_array($_REQUEST)){
             echo $RETURN;
         }else{
             echo trim('<?xml version="1.0" encoding="ISO-8859-1"?>' . $RETURN);
@@ -496,6 +541,8 @@ log_this("log/bb.log",date("H:i:s")." end while\n");
     } else {
         echo trim('<?xml version="1.0" encoding="ISO-8859-1"?><e>WEBSERVICE ONLINE</e>');
     }
+
+
 
     $name_file = "log\\log_" . date("Y-m") . ".txt";
 

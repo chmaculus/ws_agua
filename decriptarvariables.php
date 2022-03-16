@@ -1,8 +1,8 @@
-<?
+<?php
 
 $key="Fs2goO0rcf1oat1U";
 
-$name_file="pfs2.ini";
+$name_file="pfs.ini";
 $file=fopen($name_file,"r");
 $flujo_leido = fread($file,500);
 fclose($file);
@@ -21,11 +21,12 @@ function decrypt($string, $key) {
   
   $cadena_decriptada = decrypt($flujo_leido, $key);
   
-  $tabla_string = explode(" " , $cadena_decriptada);
+  //$tabla_string = explode(" " , $cadena_decriptada);
+
+  $tabla_string=(str_replace(" ","<br>",$cadena_decriptada));
  
  
- 
-echo  $cadena_decriptada;
+ echo  $tabla_string;
 
  
  

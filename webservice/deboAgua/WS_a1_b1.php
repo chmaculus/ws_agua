@@ -68,8 +68,8 @@
 		}
 		
 		$RETURN .= "</VISTA_AGUA_RUTAS>";
-		log_this("log/ws_a1_b1_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
-		log_this("log/ws_a1_b1_array.log",date("H:i:s")."\n".print_r($arrayaa,true)."\n\n");
+		// log_this("log/ws_a1_b1_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
+		// log_this("log/ws_a1_b1_array.log",date("H:i:s")."\n".print_r($arrayaa,true)."\n\n");
 
 	}
 ?>
