@@ -12,6 +12,13 @@ if(is_array($_POST)){
 	log_this("log/request_ARRAY.log","array");	
 }
 
+$array=print_r($_REQUEST,true);
+$strip=stripcslashes($array);
+log_this("log/strip.log",$strip);
+log_this("log/request0.log",$_REQUEST[0]);
+log_this("log/request.log",print_r($_REQUEST,true));
+log_this("log/json.log",json_decode($strip));
+
 
 
 
