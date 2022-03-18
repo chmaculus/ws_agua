@@ -1,15 +1,35 @@
 <?php 
 
 /*
+inventar datos para prueba
+
+
 insert or update
 verificar que no haya registros duplicados
 
 grabar el base64 encode a archivo con el nombre de archivo que viene
 
 
+
+ver config 
+if exist folder
+verifico si existe archivo
+grabo archivo
+
+construr consultas en base al array
+ejecuto consultas
+generar logs
+
+
+campos que faltan >>> modo = "A", path_foto = path donde se guarda + el nombre de la imagen, autorizado=0
+
+
 */
 
-$array2=array(	"LEAN" => "1122",
+$array2=array(	
+				"MODULO" => "AGUA",
+				"ACCION" => "EXPORT_DATA",
+				"LEAN" => "1122",
 				"LEAC" => "1133",
 				"VAL" => "-1",
 				"FECHA_TOMA" => "2021-09-22",
@@ -24,9 +44,9 @@ $array2=array(	"LEAN" => "1122",
 );
 
 
+$RETURN=json_encode($array2);
 
 //$aa=stripcslashes(print_r($_REQUEST,true));
-echo "jejeje";
 
 $array=print_r($_REQUEST,true);
 $strip=stripcslashes($array);

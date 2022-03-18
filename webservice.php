@@ -3,6 +3,10 @@
 // INCLUDES:
 include_once './webservice/utilitarios.php';
 
+include_once("./includes/connect.php");
+
+
+
 // PARAMETROS DEL ARCHIVO DE RETORNO:
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 header('Content-Type: text/xml');
@@ -14,11 +18,32 @@ $ERROR = "";
 $buffer = "";
 
 
-
 log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
+
+
 
 try {
 log_this("log/bb.log",date("H:i:s")." try\n");
+
+
+
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if($data){
+        
+        log_this("log/data.log",print_r($data,TRUE));
+        if($data["MODULO"]=="AGUA"){
+            if($data["ACCION"]=="EXPORT_DATA"){
+                log_this("log/bb.log",date("H:i:s")." EXPORT_DATA\n");
+                include_once("./webservice/deboAgua/WS_a1_b16j.php");
+            }
+        }
+
+    }else{
+        log_this("log/bb.log",date("H:i:s")." no data\n");
+    }
+
+
     /* $RETURN .= '<?xml version="1.0" encoding="ISO-8859-1"?>'; */
 
     // VARIABLES:
@@ -76,7 +101,7 @@ log_this("log/bb.log",date("H:i:s")." try\n");
 
 
     #16j
-    if (!isset($_REQUEST['a']) and is_array($_REQUEST)) {
+    if (!isset($_REQUEST['a']) and is_array($_REQUEST)){
         log_this("log/bb.log",date("H:i:s")." j16\n");        
     }
 
@@ -96,86 +121,6 @@ log_this("log/bb.log",date("H:i:s")." try\n");
         if ($_REQUEST['a'] == 1) {
 
 
-            // DECRIPTAR LOS DATOS DEL ARCHIVO PFS.INI:
-
-            $key = "Fs2goO0rcf1oat1U";
-
-            $name_file = "pfs" . $_REQUEST['a'] . ".ini";
-            //$file = fopen($name_file, "r");
-            //$flujo_leido = fread($file, 500);
-            //fclose($file);
-
-            log_this("log/bb.log",date("H:i:s")." pfs\n");
-
-            $iv = mcrypt_create_iv(mcrypt_get_block_size(MCRYPT_TripleDES, MCRYPT_MODE_CBC), MCRYPT_DEV_RANDOM);
-            $cadena_decriptada = decrypt($flujo_leido, $key);
-            $tabla_string = explode(" ", $cadena_decriptada);
-
-            $servidor = $tabla_string[3];
-            $usuario = $tabla_string[4];
-            $pwd = $tabla_string[2];
-            $basededatos = $tabla_string[1];
-
-
-            ///// LOCAL
-            /*
-              $servidor = "192.167.1.189\SQL2008R2ADV";
-              $usuario = "sa";
-              $pwd = "xxzza";
-              $basededatos = "HO_DALVIAN_P";
-             */
-            /*
-              $servidor = "SERVER";
-              $usuario = "debo_head";
-              $pwd = "DEBO";
-              $basededatos = "DEBO_HEAD";
-             */
-            /* Vieja version de compilacion de PHP:
-              $CONEXION = mssql_connect($servidor,$usuario,$pwd);
-              mssql_select_db($basededatos,$conexion);
-
-              mssql_query($CONEXION, "BEGIN TRANSACTION");
-             */
-
-          $servidor = "10.231.45.205";
-          $usuario = "debo";
-          $pwd = "debo";
-          $basededatos = "DOSSA_07022022";
-
-            //echo $servidor."<br/>";
-            //echo $usuario."<br/>";
-            //echo $pwd."<br/>";
-            //echo $basededatos."<br/>";
-
-            $server = "10.231.45.205";
-            $username ="debo";
-            $password ="debo";
-            $database ="DOSSA_08112021";
-
-            $connectionInfo = array("Database"=>$database, "UID"=>$username, "PWD"=>$password);
-
-            //$connectionInfo = array( "Database"=>"DOSSA_08112021", "UID"=>"debo", "PWD"=>"debo");
-            $CONEXION = sqlsrv_connect( $server, $connectionInfo );
-
-
-            //$CONEXION = sqlsrv_connect($servidor, array("UID" => $usuario, "PWD" => $pwd, "Database" => $basededatos));
-            if (!$CONEXION) {
-                echo "<error>Connection could not be established.</error>";
-                log_this("log/bb.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
-                log_this("log/bb.log"," exit\n");
-                exit;
-            }
-            if( $CONEXION ) {
-                 log_this("log/bb.log","Conexión establecida\n");
-            }else{
-                 echo "Conexión no se pudo establecer.<br />";
-                 log_this("log/bb.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
-            }
-
-            sqlsrv_begin_transaction($CONEXION);
-
-            //*****************************************************
-            //*****************************************************
 
             if (isset($_REQUEST['b'])) {
                 $var1=".\\webservice\\deboAgua\\WS_a1_b" . $_REQUEST['b'] . ".php";

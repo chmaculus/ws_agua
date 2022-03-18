@@ -1,7 +1,8 @@
 <?php
 
+$data = json_decode(file_get_contents('php://input'), true);
 
-
+log_this("log/data.log",print_r($data,TRUE));
 log_this("log/post.log",print_r($_POST,TRUE));
 log_this("log/get.log",print_r($_GET,TRUE));
 log_this("log/request.log",print_r($_REQUEST,TRUE));
