@@ -44,66 +44,65 @@
 			
 						
 						/*ID_MED-ID_MED*/
-						$RETURN .= "<ID_MED>". $valor_ID ."</ID_MED>";
 						
 						$tabla_PK[] = intval($valor_ID);
 						
 						/*NUM_MED-NUM_MED*/
-						$REG_VI_AGUA_A_TABLET['NUM_MED']='"'.trim($REG_VI_AGUA_A_TABLET['NUM_MED']).'"';
+						$REG_VI_AGUA_A_TABLET['NUM_MED']=strval(trim($REG_VI_AGUA_A_TABLET['NUM_MED']));
 						
 						/*MOD_MED-MOD_MED*/
-						$REG_VI_AGUA_A_TABLET['MOD_MED']='"'.trim($REG_VI_AGUA_A_TABLET['MOD_MED']).'"';
+						$REG_VI_AGUA_A_TABLET['MOD_MED']=strval(trim($REG_VI_AGUA_A_TABLET['MOD_MED']));
 						
 						/*COD-COD*/ // Codigo cliente
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['COD'])) == false) {
-							$REG_VI_AGUA_A_TABLET['COD'] = "0";
+							$REG_VI_AGUA_A_TABLET['COD'] = strval(0);
 						}
 						
 						/*DNI-DNI*/
-						$REG_VI_AGUA_A_TABLET['DNI']='"'.trim($REG_VI_AGUA_A_TABLET['DNI']).'"';
+						$REG_VI_AGUA_A_TABLET['DNI']=strval(trim($REG_VI_AGUA_A_TABLET['DNI']));
 						
 						/*NOM-NOM*/
-						$REG_VI_AGUA_A_TABLET['NOM']='"'.trim($REG_VI_AGUA_A_TABLET['NOM']).'"';
+						$REG_VI_AGUA_A_TABLET['NOM']=strval(trim($REG_VI_AGUA_A_TABLET['NOM']));
 						
 						/*TEL-TEL*/
-						$REG_VI_AGUA_A_TABLET['TEL']='"'.trim($REG_VI_AGUA_A_TABLET['TEL']).'"';
+						$REG_VI_AGUA_A_TABLET['TEL']=strval(trim($REG_VI_AGUA_A_TABLET['TEL']));
 					
 						/*CALLE-CALLE*/
-						$REG_VI_AGUA_A_TABLET['CALLE']='"'.trim($REG_VI_AGUA_A_TABLET['CALLE']).'"';
-						$REG_VI_AGUA_A_TABLET['CALLE']='"'.utf8_encode($REG_VI_AGUA_A_TABLET['CALLE']).'"';
+						$REG_VI_AGUA_A_TABLET['CALLE']=strval(trim($REG_VI_AGUA_A_TABLET['CALLE']));
+						$REG_VI_AGUA_A_TABLET['CALLE']=strval(utf8_encode($REG_VI_AGUA_A_TABLET['CALLE']));
 						log_this("log/ws_a1_b3j_calle.log",date("H:i:s")."\n".$REG_VI_AGUA_A_TABLET['CALLE']."\n\n");
 			
 						/*NUMERO-NUMERO*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['NUMERO'])) == false) {
-							$REG_VI_AGUA_A_TABLET['NUMERO'] = "0";
+							$REG_VI_AGUA_A_TABLET['NUMERO'] = strval(0);
 						}
 			
 						/*MZNA*/
-						$REG_VI_AGUA_A_TABLET['MZNA']='"'.trim($REG_VI_AGUA_A_TABLET['MZNA']).'"';
+						$REG_VI_AGUA_A_TABLET['MZNA']=strval(trim($REG_VI_AGUA_A_TABLET['MZNA']));
 			
 						/*CASA-CASA*/
-						$REG_VI_AGUA_A_TABLET['CASA']='"'.trim($REG_VI_AGUA_A_TABLET['CASA']).'"';
+						$REG_VI_AGUA_A_TABLET['CASA']=strval(trim($REG_VI_AGUA_A_TABLET['CASA']));
 			
 						/*PISO-PISO*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['PISO'])) == false) {
-							$REG_VI_AGUA_A_TABLET['PISO'] = "0";
+							$REG_VI_AGUA_A_TABLET['PISO'] = strval(0);
 						}
 			
 						/*DEPTO-DEPTO*/
-						$REG_VI_AGUA_A_TABLET['DEPTO']='"'.trim($REG_VI_AGUA_A_TABLET['DEPTO']).'"';
+						$REG_VI_AGUA_A_TABLET['DEPTO']=strval(trim($REG_VI_AGUA_A_TABLET['DEPTO']));
 			
 						/*TORRE-TORRE*/
-						$REG_VI_AGUA_A_TABLET['TORRE']='"'.trim($REG_VI_AGUA_A_TABLET['TORRE']).'"';
+						$REG_VI_AGUA_A_TABLET['TORRE']=strval(trim($REG_VI_AGUA_A_TABLET['TORRE']));
 			
 						/*RUTA-RUTA*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['RUTA'])) == false) {
-							$REG_VI_AGUA_A_TABLET['RUTA'] = "0";
+							$REG_VI_AGUA_A_TABLET['RUTA'] = strval(0);
 						}
-						$REG_VI_AGUA_A_TABLET['RUTA']='"'.trim($REG_VI_AGUA_A_TABLET['RUTA']).'"';
+						$REG_VI_AGUA_A_TABLET['RUTA']=strval(trim($REG_VI_AGUA_A_TABLET['RUTA']));
 			
 						/*ORDEN-ORDEN*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['ORDEN'])) == false) {
-							$REG_VI_AGUA_A_TABLET['ORDEN'] = 0;
+							$REG_VI_AGUA_A_TABLET['ORDEN'] = strval(0);
 						}
 			
 						/*PER-PER*/
@@ -113,24 +112,24 @@
 			
 						/*LEAN-LEAN*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['LEAN'])) == false) {
-							$REG_VI_AGUA_A_TABLET['LEAN'] = "0";
+							$REG_VI_AGUA_A_TABLET['LEAN'] = strval(0);
 						}
-						$REG_VI_AGUA_A_TABLET['LEAN']='"'.round($REG_VI_AGUA_A_TABLET['LEAN'],0).'"';
+						$REG_VI_AGUA_A_TABLET['LEAN']=strval(round($REG_VI_AGUA_A_TABLET['LEAN'],0));
 			
 						/*LEAC-LEAC*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['LEAC'])) == false) {
-							$REG_VI_AGUA_A_TABLET['LEAC'] = "0";
+							$REG_VI_AGUA_A_TABLET['LEAC'] = strval(0);
 						}
-						$REG_VI_AGUA_A_TABLET['LEAC']='"'.round($REG_VI_AGUA_A_TABLET['LEAC'],0).'"';
+						$REG_VI_AGUA_A_TABLET['LEAC']=strval(round($REG_VI_AGUA_A_TABLET['LEAC'],0));
 			
 						/*PROMEDIO-PROMEDIO*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['PROMEDIO'])) == false) {
 							$REG_VI_AGUA_A_TABLET['PROMEDIO'] = "";
 						} else if (intval(trim($REG_VI_AGUA_A_TABLET['PROMEDIO'])) <= 0) {
-							$REG_VI_AGUA_A_TABLET['PROMEDIO'] = "0";
+							$REG_VI_AGUA_A_TABLET['PROMEDIO'] = strval(0);
 						}
-						$REG_VI_AGUA_A_TABLET['PROMEDIO']='"'.trim($REG_VI_AGUA_A_TABLET['PROMEDIO']).'"';
-						$REG_VI_AGUA_A_TABLET['PROMEDIO']='"'.round($REG_VI_AGUA_A_TABLET['PROMEDIO'],2).'"';
+						$REG_VI_AGUA_A_TABLET['PROMEDIO']=strval(trim($REG_VI_AGUA_A_TABLET['PROMEDIO']));
+						$REG_VI_AGUA_A_TABLET['PROMEDIO']=strval(round($REG_VI_AGUA_A_TABLET['PROMEDIO'],2));
 
 						array_push($array_medicion, $REG_VI_AGUA_A_TABLET);
 			
