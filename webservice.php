@@ -23,10 +23,7 @@ log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 
 
 try {
-log_this("log/bb.log",date("H:i:s")." try\n");
-
-
-
+    log_this("log/bb.log",date("H:i:s")." try\n");
     $data = json_decode(file_get_contents('php://input'), true);
 
     if($data){
@@ -36,6 +33,8 @@ log_this("log/bb.log",date("H:i:s")." try\n");
             if($data["ACCION"]=="EXPORT_DATA"){
                 log_this("log/bb.log",date("H:i:s")." EXPORT_DATA\n");
                 include_once("./webservice/deboAgua/WS_a1_b16j.php");
+                echo $RETURN;
+                exit;
             }
         }
 
@@ -98,12 +97,6 @@ log_this("log/bb.log",date("H:i:s")." try\n");
     }
 
     log_this("log/bb.log",date("H:i:s")." end while\n");
-
-
-    #16j
-    if (!isset($_REQUEST['a']) and is_array($_REQUEST)){
-        log_this("log/bb.log",date("H:i:s")." j16\n");        
-    }
 
 
 
