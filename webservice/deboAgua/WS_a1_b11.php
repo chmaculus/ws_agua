@@ -78,11 +78,15 @@
 
 							// Si no hay entrada:
 							if(sqlsrv_num_rows($RESP_PRE_EXISTENCIA) <= 0) {
+
+
 	                                                    
 								$SQL = "INSERT INTO AGUA_MEDICION 
 											(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE) 
 										VALUES 
 											(".$ID_MED.", '".$PER."', ".$LEAN.", ".$LEAC.", -1, '".$FECHA."', ".$ID_ERROR.", '".$OBS."', ".$ID_OPE.");";
+
+
 								log_this("log/ws_a1_b11_sql.log",date("H:i:s")."\n".$SQL."\n\n");
 							
 								$buffer .= "<REQ_INSERT>". $SQL . "</REQ_INSERT>";

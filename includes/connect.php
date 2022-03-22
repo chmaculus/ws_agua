@@ -27,9 +27,11 @@ $username ="debo";
 $password ="debo";
 $database ="DOSSA_110322022";
 
+
 $connectionInfo = array("Database"=>$database, "UID"=>$username, "PWD"=>$password);
 $CONEXION = sqlsrv_connect( $server, $connectionInfo );
 
+log_this("log/connect.log",date("H:i:s")."\n".print_r( $connectionInfo, true)."\n");
 
 if (!$CONEXION) {
     echo "<error>Connection could not be established.</error>";
