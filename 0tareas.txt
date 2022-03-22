@@ -1,0 +1,6 @@
+
+
+json de respuesta devuelve mal los caracteres delimitadores
+
+grabar imagenes en archivo
+

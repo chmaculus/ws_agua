@@ -49,8 +49,8 @@ $array2=array(
 
 
 $RETURN=json_encode($array2);
-//$aa=stripcslashes(print_r($_REQUEST,true));
-//log_this("log/json_out.log",$RETURN);
+$aa=stripcslashes(print_r($_REQUEST,true));
+log_this("log/json_out.log",$RETURN);
 
 
 $data = json_decode(file_get_contents('php://input'), true);
