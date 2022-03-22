@@ -50,19 +50,12 @@ $array2=array(
 
 $RETURN=json_encode($array2);
 //$aa=stripcslashes(print_r($_REQUEST,true));
-log_this("log/json_out.log",$RETURN);
-
-$array=print_r($_REQUEST,true);
-$strip=stripcslashes($array);
-log_this("log/strip.log",$strip);
-
-
-log_this("log/bb.log","llega b16j\n");
+//log_this("log/json_out.log",$RETURN);
 
 
 $data = json_decode(file_get_contents('php://input'), true);
-log_this("log/data.log",print_r($data,true));
-log_this("log/bb.log","periodo: ".$data["PERIODO"]."\n");
+// log_this("log/data.log",print_r($data,true));
+// log_this("log/bb.log","periodo: ".$data["PERIODO"]."\n");
 
 
 
@@ -80,78 +73,58 @@ if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 
 	//$result = sqlsrv_query($CONEXION, $query1);
 	$rows=sqlsrv_num_rows($result);
-log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - query1: ".$query1."\n");
+	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - query1: ".$query1."\n");
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - rows: ".$rows."\n");
-	// 	log_this("log/bb.log","query: ".$query1."\n");
-	// log_this("log/bb.log","rows: ".$rows."\n");
-
-	/* colocar aqui valor array para return json*/
-	/* en log que ya existe*/
 }
 
 
 $path="\\\\10.231.45.108\imagenes";
-
 $string_fecha=$data['FECHA_TOMA']." ".$data['HORA_TOMA'];
-/*
-if ( sqlsrv_begin_transaction( $CONEXION ) === false ) {
-     die( print_r( sqlsrv_errors(), true ));
-}
-*/
 
 
 if($rows<1){
-
 	$SQL = "INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
-				('".$data['ID_MED']."', '".$data['PERIODO']."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
+				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
 					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path."')";
 
-/*
-$array=array($data['ID_MED'], $data['PERIODO'], $data['LEAN'], $data['LEAC'], -1, $string_fecha, 
-					$data['ID_ERROR'], $data['OBSERVACION'], $data['ID_OPE'], 'A', '0', $path);
-					
-	$SQL = "INSERT INTO AGUA_MEDICION 
-				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
-			VALUES 
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-	
-*/
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$SQL."\n");
+	$result = sqlsrv_query( $CONEXION, $SQL);
+	sqlsrv_commit($CONEXION);
+
 	
-	
-	
+	$affected=sqlsrv_rows_affected($result);
+	log_this("log/sql".date("Y-m").".log",date("d H:i:s ")." affected ".$affected." -\n");
 
-	/*
-	campos que faltan >>> modo = "A", path_foto = path donde se guarda + el nombre de la imagen, autorizado=0
-	*/	
-	$RESP_INSERT=null;
-	#$RESP_INSERT = sqlsrv_query($CONEXION, $SQL);
-	$RESP_INSERT = sqlsrv_query($CONEXION, $SQL, $array);
+	if(!isset($result)){
+		log_this("log/sql".date("Y-m").".log",date("d H:i:s").' - error insertar ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].' \n');
+		$array=array(	
+			"MODULO" => "AGUA",
+			"ACCION" => "EXPORT_DATA",
+			"ID_MED" => '"'.$data["ID_MED"].'"',
+			"PERIODO" => '"'.$data["PERIODO"].'"',
+			"ERROR" => "Error al insertar registro"
+		);
+			echo json_encode($array);
+			exit;
 
-	$affected=sqlsrv_rows_affected($RESP_INSERT);
-
-	sqlsrv_commit($RESP_INSERT);
-
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s ").print_r($RESP_INSERT,true)." \n");
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s ")." affected ".$affected." \n");
-
-  log_this("log/errores.log",date("H:i:s")."\n err: ".print_r( sqlsrv_errors(), true));
-
-	if(!isset($RESP_INSERT)){
-		log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - error insert\n");
-		/* no se inserto el registro 
-			agregar log error query
-			y hacer return
-		*/
 	}
 
-	if(isset($RESP_INSERT)){
-		log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - insert ok\n");
-		//log_this("log/sql".date("Y-m").".log",date("d H:i:s ").print_r($RESP_INSERT,true)." \n");
-		/* si el registro se inserto correctamente generar json y devolver insert OK */
+	if(isset($result)){
+		log_this("log/sql".date("Y-m").".log",date("d H:i:s").'se inserto correctamente - ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].'\n');
+			$array=array(	
+				"MODULO" => "AGUA",
+				"ACCION" => "EXPORT_DATA",
+				"ID_MED" => '"'.$data["ID_MED"].'"',
+				"PERIODO" => '"'.$data["PERIODO"].'"',
+				"MENSAJE" => "Se inserto correctamente",
+				"REGISTROS_AFECTADOS" => "$affected"
+			);
+			echo json_encode($array);
+			exit;
+
 	}
 
 }
@@ -171,8 +144,8 @@ if($rows>0){
 								MODO='A', 
 								AUTORIZADO='0', 
 								PATH_FOTO='".$path."'
-									where ID_MED='".$data['ID_MED']."' and 
-											PER='".$data['PERIODO']."' 
+									where ID_MED='".$data["ID_MED"]."' and 
+											PER='".$data["PERIODO"]."' 
 
 					";
 
@@ -180,6 +153,7 @@ if($rows>0){
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$SQL."\n");
 	
 	$RESP_UPDATE = sqlsrv_query($CONEXION, $SQL);
+	sqlsrv_commit($CONEXION);
 	
 	$affected=sqlsrv_rows_affected($RESP_UPDATE);
 
@@ -187,22 +161,32 @@ if($rows>0){
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s ")." affected ".$affected." \n");
 
 	if(!isset($RESP_UPDATE)){
-		log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - error update\n");
-		/* no se inserto el registro 
-			agregar log error query
-			y hacer return
-		*/
+				log_this("log/sql".date("Y-m").".log",date("d H:i:s").' - error actualizar ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].'\n');
+			$array=array(	
+				"MODULO" => "AGUA",
+				"ACCION" => "EXPORT_DATA",
+				"ID_MED" => '"'.$data["ID_MED"].'"',
+				"PERIODO" => '"'.$data["PERIODO"].'"',
+				"ERROR" => "Error al actualizar registro"
+			);
+			echo json_encode($array);
+			exit;
 	}
 
 	if(isset($RESP_UPDATE)){
-		log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - update ok\n");
-		/* si el registro se inserto correctamente generar json y devolver insert OK */
+		log_this("log/sql".date("Y-m").".log",date("d H:i:s").'update ok - ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].'\n');
+			$array=array(	
+				"MODULO" => "AGUA",
+				"ACCION" => "EXPORT_DATA",
+				"ID_MED" => '"'.$data["ID_MED"].'"',
+				"PERIODO" => '"'.$data["PERIODO"].'"',
+				"MENSAJE" => "Se actualizo correctamente",
+				"REGISTROS_AFECTADOS" => '"'.$affected.'"'
+			);
+			echo json_encode($array);
+			exit;
 	}
 
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." ".print_r(sqlsrv_errors(), true)."\n");
-
-
-	
 }
 
 
@@ -215,170 +199,6 @@ if($rows>0){
 
 
 
-/*
-$SQL = "UPDATE AGUA_MEDICION SET 
-    LEAN = ".$LEAN.",
-    LEAC = ".$LEAC.",
-    VAL = -1, 
-    FECHA_TOMA = '".$FECHA."',
-    ID_ERROR = ".$ID_ERROR.",
-    OBSERVACION = '".$OBS."',
-    ID_OPE = ".$ID_OPE." 
-	WHERE 
-    ID_MED = ".$ID_MED." AND
-    PER = '".$PER."';";
-
-*/
-
-
-/*
-
-
-
-
-
-
-	// A1-B11 = EXPORT DATOS DE LAS MEDICIONES [FIABILIZADO 29/12/2011]
-		// Modificacion MSSQL -> SQLSRV (06/03/2012)
-			        file_put_contents("log.txt", "2");
-
-	if(!isset($_FILES['p'])){
-		$RETURN .= "<ERR>Faltan parametros opcionales: 'P'</ERR>";
-	}
-	else {
-		// Valores �tiles:
-			$tmp_name = $_FILES["p"]["tmp_name"];
-			$FECHA_NOW = date("Y-m-d_H-i");
-		
-			if (!isset($_REQUEST['c'])) {
-				$TABLET = 0;
-			}
-			else {
-				$TABLET = $_REQUEST['c'];
-			}
-		
-		// Test existencia CARPETA "deboagua":
-			if (file_exists($C_DEBOAGUA) == false) {
-				mkdir($C_DEBOAGUA, 0777);
-			}
-		
-		// Test existencia CARPETA "informes":
-			if (file_exists($C_DEBOAGUA . "\\" . $C_XML) == false) {
-				mkdir($C_DEBOAGUA . "\\" . $C_XML, 0777);
-			}
-		
-		// Creaci�n del archivo XML en el servidor distante:
-			$name = $C_DEBOAGUA . "\\" . $C_XML . "\\COPYCONF_DALVIAN_".$TABLET."_".$FECHA_NOW.".xml";
-		
-		if(move_uploaded_file($tmp_name,$name)){
-			
-			// Cargamos el XML reci�n recibido (sacando los '&' y '<'):
-				clean_xml_file($name);
-				$xml = simplexml_load_file($name);
-					
-			// Empezamos a generar el XML:			
-				$RETURN .= "<VI_AGUA_FROM_TABLET_P>";
-				$buffer  = '<?xml version="1.0" encoding="ISO-8859-1"?>
-							<VI_AGUA_FROM_TABLET_P>';	
-			
-			// Lectura iterada de las MEDICIONES recibidas:
-				foreach ($xml->MEDICION as $MEDICION){
-					
-					// Lectura de los datos:
-						$ID_MED = $MEDICION->ID_MED;
-						$PER = trim($MEDICION->PER);
-						$LEAN = trim($MEDICION->LEAN);
-						$LEAC = trim($MEDICION->LEAC);
-						$VAL = trim($MEDICION->VAL);
-						$FECHA_TEMP = trim($MEDICION->FECHA_TOMA);
-						$ID_ERROR = $MEDICION->ID_ERROR;
-						$OBS = trim($MEDICION->OBSERVACION);
-						$ID_OPE = $MEDICION->ID_OPE;
-					
-					// Test para saber si ya existe la entrada en la BDD:
-						$PRE_EXISTENCIA = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = ".$ID_MED." AND PER = '".$PER."'";
-						$buffer .= "<REQ_PRE_EXIST>". $PRE_EXISTENCIA . "</REQ_PRE_EXIST>";
-						
-						$RESP_PRE_EXISTENCIA = sqlsrv_query($CONEXION, $PRE_EXISTENCIA, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
-						$buffer .= "<RESP_REQ_PRE_EXIST>". sqlsrv_num_rows($RESP_PRE_EXISTENCIA) . "</RESP_REQ_PRE_EXIST>";
-						
-						if ((is_numeric($LEAC) == true && $LEAC > 0) || !empty($OBS) || $ID_ERROR != 0) {
-
-							// Si no hay entrada:
-							if(sqlsrv_num_rows($RESP_PRE_EXISTENCIA) <= 0) {
-	                                                    
-								$SQL = "INSERT INTO AGUA_MEDICION 
-											(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE) 
-										VALUES 
-											(".$ID_MED.", '".$PER."', ".$LEAN.", ".$LEAC.", -1, '".$FECHA."', ".$ID_ERROR.", '".$OBS."', ".$ID_OPE.");";
-								log_this("log/ws_a1_b11_sql.log",date("H:i:s")."\n".$SQL."\n\n");
-							
-								$buffer .= "<REQ_INSERT>". $SQL . "</REQ_INSERT>";
-								
-								$RESP_INSERT = sqlsrv_query($CONEXION, $SQL);
-								
-								if(!isset($RESP_INSERT)){
-									sqlsrv_query($CONEXION, "ROLLBACK TRANSACTION");
-								}
-								
-								$buffer .= "<RESP_REQ_INSERT>Successfull INSERT: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_INSERT>";
-								$RETURN .= "<RESP_REQ_INSERT>Successfull INSERT: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_INSERT>";
-	                                                    
-							} else {
-	                                                     
-	                                $SQL = "UPDATE AGUA_MEDICION SET 
-                                        LEAN = ".$LEAN.",
-                                        LEAC = ".$LEAC.",
-                                        VAL = -1, 
-                                        FECHA_TOMA = '".$FECHA."',
-                                        ID_ERROR = ".$ID_ERROR.",
-                                        OBSERVACION = '".$OBS."',
-                                        ID_OPE = ".$ID_OPE." 
-                                		WHERE 
-                                        ID_MED = ".$ID_MED." AND
-                                        PER = '".$PER."';";
-
-									log_this("log/ws_a1_b11_sql.log",date("H:i:s")."\n".$SQL."\n\n");
-                                    $buffer .= "<REQ_UPDATE>". $SQL . "</REQ_UPDATE>";
-
-                                    $RESP_UPDATE = sqlsrv_query($CONEXION,$SQL);
-
-                                    if(!isset($RESP_UPDATE)){
-                                            sqlsrv_query($CONEXION,"ROLLBACK TRANSACTION");
-                                    }
-
-                                    $buffer .= "<RESP_REQ_UPDATE>Successfull UPDATE: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_UPDATE>";
-                                    $RETURN .= "<RESP_REQ_UPDATE>Successfull UPDATE: ID_MED[". $ID_MED ."] ; PER[". $PER ."]</RESP_REQ_UPDATE>";
-	                                                        
-	                        }
-						}
-						
-					// Cerramos las balizas XML:
-						$RETURN .= "</MEDICION>";	
-						$buffer .= "</MEDICION>";
-					
-					// Cerramos el recurso SQL:
-						sqlsrv_free_stmt($RESP_PRE_EXISTENCIA);
-
-				} // end foreach
-			
-			$buffer .= '</VI_AGUA_FROM_TABLET_P>';
-			$RETURN .= "<final>EXITO Exito exito</final></VI_AGUA_FROM_TABLET_P>";
-			
-			////////////////////////////////////////////////////////////////////////////////
-			$name_file=$C_DEBOAGUA . "\\" . $C_XML . "\\P_DALVIAN_".$TABLET."_".$FECHA_NOW.".xml";/////////////////////
-			$file=fopen($name_file,"w+");///////////////////////////////////////////////////
-			fwrite($file,$buffer);//////////////////////////////////////////////////////////
-			fclose($file);//////////////////////////////////////////////////////////////////
-			////////////////////////////////////////////////////////////////////////////////
-			
-		}
-		else {
-			$RETURN .= "<ERR>Imposible copiar el archivo XML en el servidor [". $tmp_name ."]</ERR>";
-		}
-	}					
-
-*/
 
 
 

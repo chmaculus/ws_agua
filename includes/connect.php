@@ -34,25 +34,23 @@ $CONEXION = sqlsrv_connect( $server, $connectionInfo );
 log_this("log/connect.log",date("H:i:s")."\n".print_r( $connectionInfo, true)."\n");
 
 if (!$CONEXION) {
-    echo "<error>Connection could not be established.</error>";
     log_this("log/connect.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
-    log_this("log/connect.log"," exit\n");
+    $return=array("ERROR" => "No se pudo conectar con la base de datos");
+    echo json_encode($return);
+    //log_this("log/connect.log"," exit\n");
     exit;
 }
 if( $CONEXION ) {
      log_this("log/connect.log","Conexión establecida\n");
 }else{
      echo "Conexión no se pudo establecer.<br />";
-     log_this("log/connect.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+     //log_this("log/connect.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
 }
 
 sqlsrv_begin_transaction($CONEXION);
 
 //*****************************************************
 //*****************************************************
-
-
-
 
 
 ?>

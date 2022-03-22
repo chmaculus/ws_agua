@@ -27,14 +27,14 @@ $string_fecha=$data['FECHA_TOMA']." ".$data['HORA_TOMA'];
 
 
 
-
+/*
 $sql = "INSERT INTO temp1 (id, data) VALUES (?, ?)";
 $params = array(1, "some data");
 $stmt = sqlsrv_query( $conn, $sql, $params);
 if( $stmt === false ) {
      die( print_r( sqlsrv_errors(), true));
 }
-
+*/
 
 
 
@@ -50,10 +50,10 @@ $SQL = "INSERT INTO AGUA_MEDICION
 $SQL="INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
-				('23', '2022/03', '1133', '1144', -1, '20220311 11:22', 
+				('27', '2022/03', '1133', '1144', -1, '20220311 11:22', 
 					'5', 'JEJEJEJE', '33', 'A', '0', '\\10.231.45.108\imagenes')";
 
-$stmt = sqlsrv_query( $conn, $SQL, $array);
+$stmt = sqlsrv_query( $conn, $SQL);
 if( $stmt === false ) {
      die( print_r( sqlsrv_errors(), true));
 }
