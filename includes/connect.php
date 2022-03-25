@@ -11,6 +11,7 @@ $name_file = "pfs" . $_REQUEST['a'] . ".ini";
 
 log_this("log/connect.log",date("H:i:s")." pfs\n");
 
+/*
 $iv = mcrypt_create_iv(mcrypt_get_block_size(MCRYPT_TripleDES, MCRYPT_MODE_CBC), MCRYPT_DEV_RANDOM);
 $cadena_decriptada = decrypt($flujo_leido, $key);
 $tabla_string = explode(" ", $cadena_decriptada);
@@ -19,7 +20,7 @@ $servidor = $tabla_string[3];
 $usuario = $tabla_string[4];
 $pwd = $tabla_string[2];
 $basededatos = $tabla_string[1];
-
+*/
 
 ///// LOCAL
 $server = "10.231.45.205\sql2019";
@@ -37,7 +38,7 @@ if (!$CONEXION) {
     log_this("log/connect.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
     $return=array("ERROR" => "No se pudo conectar con la base de datos");
     echo json_encode($return);
-    //log_this("log/connect.log"," exit\n");
+    log_this("log/connect.log"," exit\n");
     exit;
 }
 if( $CONEXION ) {

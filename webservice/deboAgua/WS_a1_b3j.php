@@ -64,24 +64,6 @@
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['COD'])) == false) {
 							$REG_VI_AGUA_A_TABLET['COD'] = strval(0);
 						}
-						/*
-						Array
-							(
-							    [0] => 700
-							    [ID] => 700
-							    [1] => b16s001713
-							    [NUM] => b16s001713
-							    [2] =>  1530
-							    [MOD] =>  1530
-							    [3] => 3/4
-							    [PUL] => 3/4
-							    [4] => 1024
-							    [COD_RES] => 1024
-							)
-
-
-						*/
-						
 						$REG_VI_AGUA_A_TABLET['MEDIDOR_NUMERO']=strval(trim($arr1['NUM']));
 						$REG_VI_AGUA_A_TABLET['MEDIDOR_MODELO']=strval(trim($arr1['MOD']));
 						$REG_VI_AGUA_A_TABLET['MEDIDOR_PULGADAS']=strval(trim($arr1['PUL']));
