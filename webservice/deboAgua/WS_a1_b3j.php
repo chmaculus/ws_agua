@@ -42,7 +42,7 @@
 				if (is_numeric($valor_ID) == true && intval($valor_ID) >= 0) {
 					if (in_array($valor_ID, $tabla_PK) == false) {
 						$q="select * from agua_medidor where id='".$REG_VI_AGUA_A_TABLET['ID_MED']."'";
-						echo "q: ".$q."\n";
+						//echo "q: ".$q."\n";
 						$result = sqlsrv_query($CONEXION, $q);
 						//$arr1=sqlsrv_fetch($result, 0);
 						$arr1=sqlsrv_fetch_array( $result);
