@@ -41,7 +41,14 @@
 				$valor_ID = trim($REG_VI_AGUA_A_TABLET['ID_MED']);
 				if (is_numeric($valor_ID) == true && intval($valor_ID) >= 0) {
 					if (in_array($valor_ID, $tabla_PK) == false) {
-			
+						$q="select * from agua_medidor where id='".$REG_VI_AGUA_A_TABLET['ID_MED']."'";
+						echo "q: ".$q."\n";
+						$result = sqlsrv_query($CONEXION, $q);
+						//$arr1=sqlsrv_fetch($result, 0);
+						$arr1=sqlsrv_fetch_array( $result);
+
+						//echo "--------------\n".print_r($arr1,true)."\n--------------\n\n";
+
 						
 						/*ID_MED-ID_MED*/
 						
@@ -57,7 +64,28 @@
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['COD'])) == false) {
 							$REG_VI_AGUA_A_TABLET['COD'] = strval(0);
 						}
+						/*
+						Array
+							(
+							    [0] => 700
+							    [ID] => 700
+							    [1] => b16s001713
+							    [NUM] => b16s001713
+							    [2] =>  1530
+							    [MOD] =>  1530
+							    [3] => 3/4
+							    [PUL] => 3/4
+							    [4] => 1024
+							    [COD_RES] => 1024
+							)
+
+
+						*/
 						
+						$REG_VI_AGUA_A_TABLET['MEDIDOR_NUMERO']=strval(trim($arr1['NUM']));
+						$REG_VI_AGUA_A_TABLET['MEDIDOR_MODELO']=strval(trim($arr1['MOD']));
+						$REG_VI_AGUA_A_TABLET['MEDIDOR_PULGADAS']=strval(trim($arr1['PUL']));
+
 						/*DNI-DNI*/
 						$REG_VI_AGUA_A_TABLET['DNI']=strval(trim($REG_VI_AGUA_A_TABLET['DNI']));
 						
