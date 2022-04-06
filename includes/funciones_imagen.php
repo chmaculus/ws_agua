@@ -1,14 +1,17 @@
 <?php
 
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
+
+	echo "imagen_origen $imagen_origen\n";
+	echo "imagen_dest $imagen_destino\n";
 	// Load the stamp and the photo to apply the watermark to
-	$im = imagecreatefromjpeg($imagen);
+	$im = imagecreatefromjpeg($imagen_origen);
 
 	$width  = imagesx($im) ;
 	$height = imagesy($im);
 
-	echo "w: ".$width."<br>";
-	echo "h: ".$height."<br>";
+	// echo "w: ".$width."<br>";
+	// echo "h: ".$height."<br>";
 
 	$fecha=date("d/m/Y");
 	$hora=date("H:i");
@@ -20,8 +23,7 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 	$trans_background = imagecolorallocatealpha($im, 0, 0, 0, 127);
 
 	$white = imagecolorallocate($im, 255, 255, 255);
-
-	echo $white."<br>";
+	//echo $white."<br>";
 
 	// Set Path to Font File
 	$font_path = './times.ttf';
@@ -90,8 +92,9 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 
 		// Save the image to file and free memory
 		//header('Content-Type: image/png');
-		$aa=str_replace(".jpg",".png",$imagen);
-		imagepng($im, '/home/php5.6/'.$aa);
+		$aa=str_replace(".jpg",".png",$imagen_destino);
+		echo "img dest: ".$aa."\n";
+		imagepng($im, $aa);
 		imagedestroy($im);
 
 }

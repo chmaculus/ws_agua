@@ -43,31 +43,30 @@ $path="\\\\10.231.45.108\imagenes\\";
 
 /* falta codigo_cliente*/
 
-// $imagen=base64_decode($array2["IMAGEN"]);
+$imagen=base64_decode($data["IMAGEN"]);
+$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
 
-// $nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
-
-// $gestor = fopen($nom_temp, 'w');
-// if (fwrite($gestor, $imagen) === FALSE) {
-// 	fclose($gestor);
-//   return "0";
-// }else{
-// 	fclose($gestor);
-// 	return "1";
-// }
-// $imagen="";
-
- $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
-
-echo "residente: ".$residente."\n";
-
-$nombre=genera_nombre(33, $data["ID_MED"], $data["PERIODO"]);
+$gestor = fopen($nom_temp, 'w');
+if (fwrite($gestor, $imagen) === FALSE) {
+	fclose($gestor);
+	//agreegar mensaje de error json error al grabar
+  //echo "error al grabar";
+}else{
+	fclose($gestor);
+  //echo "grabar OK";
+}
+$imagen="";
 
 
+$residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
+
+$nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
+
+//echo "path: ".$path.$nombre."\n";
 
 //function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 $fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
-//estampar($nom_temp, $nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
+estampar($nom_temp, $path.$nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
 
 
 
