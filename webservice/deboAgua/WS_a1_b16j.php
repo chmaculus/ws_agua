@@ -28,9 +28,7 @@ ejecuto consultas
 generar logs
 
 crear carperas periodo
-
 error al almacenar imagen
-
 RESPUESTAS JSON
 
 */
@@ -45,10 +43,14 @@ $path="\\\\10.231.45.108\imagenes\\";
 
 /* falta codigo_cliente*/
 
-$file=base64_decode($array2["IMAGEN"]);
+$imagen=base64_decode($array2["IMAGEN"]);
+
 
 
 $nombre=genera_nombre(33, $data["ID_MED"], $data["PERIODO"]);
+
+
+
 $return=grabar_imagen($path, $nombre, $file, $array2["PERIODO"]);
 
 

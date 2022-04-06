@@ -4,7 +4,7 @@
 include_once './webservice/utilitarios.php';
 
 include_once("./includes/connect.php");
-include_once("./includes/funciones_imagen.php");
+include_once("./includes/funciones.php");
 
 
 
@@ -19,7 +19,7 @@ $ERROR = "";
 $buffer = "";
 
 
-log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
+//log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 
 
 
