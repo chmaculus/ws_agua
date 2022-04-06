@@ -24,13 +24,13 @@ log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 
 try {
     log_this("log/bb.log",date("H:i:s")." try\n");
-    $data = json_decode(file_get_contents('php://input'), true);
+    $dataa = json_decode(file_get_contents('php://input'), true);
 
-    if($data){
+    if($dataa){
         
         log_this("log/data.log",print_r($data,TRUE));
-        if($data["MODULO"]=="AGUA"){
-            if($data["ACCION"]=="EXPORT_DATA"){
+        if($dataa["MODULO"]=="AGUA"){
+            if($dataa["ACCION"]=="EXPORT_DATA"){
                 log_this("log/bb.log",date("H:i:s")." EXPORT_DATA\n");
                 include_once("./webservice/deboAgua/WS_a1_b16j.php");
                 echo $RETURN;

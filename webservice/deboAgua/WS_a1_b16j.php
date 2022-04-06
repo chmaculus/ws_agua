@@ -69,8 +69,9 @@ $aa=stripcslashes(print_r($_REQUEST,true));
 log_this("log/json_out.log",$RETURN);
 
 
-$data = json_decode(file_get_contents('php://input'), true);
-// log_this("log/data.log",print_r($data,true));
+$data = $dataa;
+
+ log_this("log/dataaa.log",print_r($data,true));
 // log_this("log/bb.log","periodo: ".$data["PERIODO"]."\n");
 
 
