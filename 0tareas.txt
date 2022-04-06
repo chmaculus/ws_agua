@@ -1,6 +1,6 @@
-
-
 json de respuesta devuelve mal los caracteres delimitadores
 
 grabar imagenes en archivo
+
+en logs registrar n de serie de tablet and idtablet
 
