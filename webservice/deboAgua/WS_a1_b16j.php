@@ -57,7 +57,7 @@ $path="\\\\10.231.45.108\imagenes\\";
 // }
 // $imagen="";
 
- $residente=medidor_trae_residente($data["ID_MED"]);
+ $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
 
 echo "residente: ".$residente."\n";
 
@@ -67,7 +67,7 @@ $nombre=genera_nombre(33, $data["ID_MED"], $data["PERIODO"]);
 
 //function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 $fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
-estampar($nom_temp, $nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
+//estampar($nom_temp, $nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
 
 
 
