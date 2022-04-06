@@ -43,21 +43,26 @@ $path="\\\\10.231.45.108\imagenes\\";
 
 /* falta codigo_cliente*/
 
-$imagen=base64_decode($array2["IMAGEN"]);
+// $imagen=base64_decode($array2["IMAGEN"]);
 
-$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
+// $nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
 
-$gestor = fopen($nom_temp, 'w');
-if (fwrite($gestor, $imagen) === FALSE) {
-	fclose($gestor);
-  return "0";
-}else{
-	fclose($gestor);
-	return "1";
-}
-$imagen="";
+// $gestor = fopen($nom_temp, 'w');
+// if (fwrite($gestor, $imagen) === FALSE) {
+// 	fclose($gestor);
+//   return "0";
+// }else{
+// 	fclose($gestor);
+// 	return "1";
+// }
+// $imagen="";
+
+ $residente=medidor_trae_residente($data["ID_MED"]);
+
+echo "residente: ".$residente."\n";
 
 $nombre=genera_nombre(33, $data["ID_MED"], $data["PERIODO"]);
+
 
 
 //function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
