@@ -45,9 +45,25 @@ $path="\\\\10.231.45.108\imagenes\\";
 
 $imagen=base64_decode($array2["IMAGEN"]);
 
+$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
 
+$gestor = fopen($nom_temp, 'w');
+if (fwrite($gestor, $imagen) === FALSE) {
+	fclose($gestor);
+  return "0";
+}else{
+	fclose($gestor);
+	return "1";
+}
+$imagen="";
 
 $nombre=genera_nombre(33, $data["ID_MED"], $data["PERIODO"]);
+
+
+//function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
+$fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
+estampar($nom_temp, $nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
+
 
 
 
@@ -82,7 +98,7 @@ if($rows<1){
 					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path."')";
 
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$SQL."\n");
+	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
 	sqlsrv_commit($CONEXION);
 

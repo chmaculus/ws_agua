@@ -1,8 +1,8 @@
 <?php
 
-function estampar($dir,$imagen,$fecha=0,$hora=0,$mzna=0,$casa=0){
+function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 	// Load the stamp and the photo to apply the watermark to
-	$im = imagecreatefromjpeg($dir.$imagen);
+	$im = imagecreatefromjpeg($imagen);
 
 	$width  = imagesx($im) ;
 	$height = imagesy($im);
@@ -65,16 +65,16 @@ function estampar($dir,$imagen,$fecha=0,$hora=0,$mzna=0,$casa=0){
 		//imagefilledrectangle($stamp, 9, 9, 90, 60, 0xFFFFFF);
 
 
-/*
- imagestring(
-    resource $image,
-    int $font,
-    int $x,
-    int $y,
-    string $string,
-    int $color
-): bool
-*/
+		/*
+		 imagestring(
+		    resource $image,
+		    int $font,
+		    int $x,
+		    int $y,
+		    string $string,
+		    int $color
+		): bool
+		*/
 
 		//imagestring($stamp, 1, 20, 20, $fecha, 0x0000FF);
 		//imagestring($stamp, 2, 20, 40, $hora, 0x0000FF);

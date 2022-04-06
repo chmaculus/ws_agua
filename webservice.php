@@ -4,7 +4,8 @@
 include_once './webservice/utilitarios.php';
 
 include_once("./includes/connect.php");
-include_once("./includes/funciones.php");
+include_once("./includes/funciones_imagen.php");
+include_once("./includes/funciones_cliente.php");
 
 
 
