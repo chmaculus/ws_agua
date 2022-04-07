@@ -1,9 +1,11 @@
 /config.ini
-/pfs*.ini
 /nbproject/
 deboagua/*
 logagua\.txt
+/includes/connect.php
 
 log\.txt
 
-log/
+log/*
+tmp/*
+
