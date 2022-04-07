@@ -90,6 +90,8 @@ log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa cartpeta destino\n");
 
 
 $nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
+$nombre_png=str_replace(".jpg",".png",$nombre);
+
 log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa genera nombre\n");
 
 //echo "path: ".$path.$nombre."\n";
@@ -135,7 +137,7 @@ if($rows<1){
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
-					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
+					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre_png."')";
 
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
 	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
@@ -195,7 +197,7 @@ if($rows>0){
 								ID_OPE='".$data['ID_OPE']."', 
 								MODO='A', 
 								AUTORIZADO='0', 
-								PATH_FOTO='".$path.$nombre."'
+								PATH_FOTO='".$path.$nombre_png."'
 									where ID_MED='".$data["ID_MED"]."' and 
 											PER='".$data["PERIODO"]."' 
 
