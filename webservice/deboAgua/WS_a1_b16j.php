@@ -4,28 +4,18 @@
 
 inventar datos para prueba
 
-escribir funcion para
-obtener manzana y casa
-
-informacion exif
-
-
-
+ver si puedo recuperar exif
 
 insert or update --- OK
 verificar que no haya registros duplicados --- OK
 
-ver si puedo recuperar exif
-
-
 ver config 
-if exist folder
-verifico si existe archivo
+if exist folder ok
 grabo archivo
 
-construr consultas en base al array
-ejecuto consultas
-generar logs
+construr consultas en base al array OK
+ejecuto consultas OK
+generar logs OK
 
 crear carperas periodo
 error al almacenar imagen
@@ -43,22 +33,52 @@ $path="\\\\10.231.45.108\imagenes\\";
 
 /* falta codigo_cliente*/
 
+
+#-------------------------------------------------------------------
+///graba temporal imagen
 $imagen=base64_decode($data["IMAGEN"]);
+
 $nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
 
 $gestor = fopen($nom_temp, 'w');
 if (fwrite($gestor, $imagen) === FALSE) {
 	fclose($gestor);
-	//agreegar mensaje de error json error al grabar
-  //echo "error al grabar";
+	$file_write=0;
+		$array=array(	
+			"MODULO" => "AGUA",
+			"ACCION" => "EXPORT_DATA",
+			"ID_MED" => '"'.$data["ID_MED"].'"',
+			"PERIODO" => '"'.$data["PERIODO"].'"',
+			"ERROR" => "Error al grabar archivo temporal"
+		);
+			echo json_encode($array);
+			exit;
 }else{
 	fclose($gestor);
-  //echo "grabar OK";
+	$file_write=1;
 }
 $imagen="";
+#-------------------------------------------------------------------
 
 
 $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
+
+
+
+#-------------------------------------------------------------------
+//verifica / crea  carpeta destino
+$periodo=str_replace("/","",$data["PERIODO"]);
+if(is_writable($path)){
+		$path=$path.$periodo."\\";
+		if (!file_exists($path)) {
+		    mkdir($path, 0777, true);
+		}
+}else{
+	$dest_folder=1;
+}
+#-------------------------------------------------------------------
+
+
 
 $nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
 
@@ -69,15 +89,24 @@ $fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
 estampar($nom_temp, $path.$nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
 
 
+//elimino temporal
+unlink($nom_temp);
+
+$array=array(	
+	"MODULO" => "AGUA",
+	"ACCION" => "EXPORT_DATA",
+	"ID_MED" => '"'.$data["ID_MED"].'"',
+	"PERIODO" => '"'.$data["PERIODO"].'"',
+	"STATUS" => "Los datos se almacenaron correctamente"
+	
+);
+	echo json_encode($array);
+	exit;
 
 
-$return=grabar_imagen($path, $nombre, $file, $array2["PERIODO"]);
 
-
-
-
-
-
+#------------------------------------------------------------------
+//verifica si el registro ya existe
 if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 	// Test para saber si ya existe la entrada en la BDD:
 	$query1 = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = ".$data["ID_MED"]." AND PER = '".$data["PERIODO"]."'";
@@ -90,10 +119,16 @@ if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - query1: ".$query1."\n");
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - rows: ".$rows."\n");
 }
+#------------------------------------------------------------------
+
+
 
 
 $string_fecha=$data['FECHA_TOMA']." ".$data['HORA_TOMA'];
 
+
+#------------------------------------------------------------------
+//no existe registro
 if($rows<1){
 	$SQL = "INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
@@ -140,12 +175,14 @@ if($rows<1){
 			exit;
 
 	}
-
 }
+#------------------------------------------------------------------
 
 
 
 	
+#------------------------------------------------------------------
+//ya existe el registro. actualizo
 if($rows>0){
 	$SQL = "update AGUA_MEDICION set 
 								LEAN='".$data['LEAN']."',
@@ -164,7 +201,7 @@ if($rows>0){
 					";
 
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$SQL."\n");
+	log_this("log/sql".date("Y-m").".log",$SQL."\n");
 	
 	$RESP_UPDATE = sqlsrv_query($CONEXION, $SQL);
 	sqlsrv_commit($CONEXION);
@@ -202,6 +239,9 @@ if($rows>0){
 	}
 
 }
+#------------------------------------------------------------------
+
+
 
 
 
@@ -217,9 +257,7 @@ CCCCC:  código de cliente. Longitud 5 caracteres. Se rellena con ceros a la izq
 DDDDDD: ID de medidor. Longitud 6 caracteres. Se rellena con ceros a la izquierda.
 YYYY: año del periodo medido. Longitud 4 caracteres.
 MM: mes del periodo medido. Longitud 2 caracteres. Se rellena con ceros a la izquierda
-
 */
-
 
 
 #---------------------------------------------------------------------------
@@ -238,49 +276,6 @@ function genera_nombre($codigo_cliente, $id_medidor, $periodo=0){
 	return $nombre;
 }
 #---------------------------------------------------------------------------
-
-#---------------------------------------------------------------------------
-function grabar_imagen($path, $nombre, $file, $periodo=0){
-		/*
-		php grabar imagen
-		verificar si existe carpeta
-		if no crear carpeta
-		crear carpeta anio periodo
-		agregar marca de agua
-		escribir archivo formato especificado
-		*/
-		//$path="./";
-		
-		$periodo=str_replace("/","",$periodo);
-
-		$path=$path.$periodo."\\";
-		if (!file_exists($path)) {
-		    mkdir($path, 0777, true);
-		}
-	//echo $path."\n";
-			$fp = fopen($path.$nombre, 'w');
-			if (fwrite($fp, $file) === FALSE) {
-				fclose($fp);
-        return "0";
-	    }else{
-	    	fclose($fp);
-	    	return "1";
-	    }
-		
-}
-#---------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>
