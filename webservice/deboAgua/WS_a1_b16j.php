@@ -1,4 +1,10 @@
 <?php 
+if (file_exists("log/ws_a1_b16j.log")){
+	unlink("log/ws_a1_b16j.log");
+}
+
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."llega\n");
+
 
 /*
 
@@ -33,6 +39,7 @@ $data = $dataa;
 /* falta codigo_cliente*/
 
 
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."inicio graba temp\n");
 #-------------------------------------------------------------------
 ///graba temporal imagen
 $imagen=base64_decode($data["IMAGEN"]);
@@ -58,9 +65,11 @@ if (fwrite($gestor, $imagen) === FALSE) {
 }
 $imagen="";
 #-------------------------------------------------------------------
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."fin graba temp\n");
 
 
 $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa trae residente\n");
 
 
 
@@ -76,31 +85,23 @@ if(is_writable($path)){
 	$dest_folder=1;
 }
 #-------------------------------------------------------------------
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa cartpeta destino\n");
 
 
 
 $nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa genera nombre\n");
 
 //echo "path: ".$path.$nombre."\n";
 
 //function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 $fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
 estampar($nom_temp, $path.$nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa estampar\n");
 
 
 //elimino temporal
 unlink($nom_temp);
-
-$array=array(	
-	"MODULO" => "AGUA",
-	"ACCION" => "EXPORT_DATA",
-	"ID_MED" => '"'.$data["ID_MED"].'"',
-	"PERIODO" => '"'.$data["PERIODO"].'"',
-	"STATUS" => "Los datos se almacenaron correctamente"
-	
-);
-	echo json_encode($array);
-	exit;
 
 
 
@@ -119,6 +120,7 @@ if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - rows: ".$rows."\n");
 }
 #------------------------------------------------------------------
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa verifica registro\n");
 
 
 
@@ -199,6 +201,7 @@ if($rows>0){
 
 					";
 
+
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
 	log_this("log/sql".date("Y-m").".log",$SQL."\n");
 	
@@ -241,6 +244,19 @@ if($rows>0){
 #------------------------------------------------------------------
 
 
+
+#------------------------------------------------------------------
+$array=array(	
+	"MODULO" => "AGUA",
+	"ACCION" => "EXPORT_DATA",
+	"ID_MED" => '"'.$data["ID_MED"].'"',
+	"PERIODO" => '"'.$data["PERIODO"].'"',
+	"STATUS" => "Los datos se almacenaron correctamente"
+	
+);
+	echo json_encode($array);
+	exit;
+#------------------------------------------------------------------
 
 
 
