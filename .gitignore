@@ -3,7 +3,7 @@
 deboagua/*
 logagua\.txt
 /includes/connect.php
-
+/tests/log/*
 log\.txt
 
 log/*
