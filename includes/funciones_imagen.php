@@ -2,6 +2,15 @@
 
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 
+	echo "fecha: ".$fecha."\n";
+	echo "hora: ".$hora."\n";
+
+
+//$fecha="20220407";
+$anio = substr($fecha, 0, 4);
+$mes = substr($fecha, 4, 2);
+$dia = substr($fecha, 6, 2);
+$fecha="$dia/$mes/$anio";
 //	echo "imagen_origen $imagen_origen\n";
 //	echo "imagen_dest $imagen_destino\n";
 	// Load the stamp and the photo to apply the watermark to
@@ -13,8 +22,8 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 	// echo "w: ".$width."<br>";
 	// echo "h: ".$height."<br>";
 
-	$fecha=date("d/m/Y");
-	$hora=date("H:i");
+	// $fecha=date("d/m/Y");
+	// $hora=date("H:i");
 
 
 	imagesavealpha($im, true);
@@ -57,11 +66,12 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 		$y1=80;
 		$size=65;
 		$despl=70;
+
+		/* datos que se imprimen en el estampado de la imagen*/
+		$string_direccion="M".$mzna." C".$casa;
 		imagettftext($stamp, $size, 0, $x1, $y1, $white, $font_path, $fecha);
-
 		imagettftext($stamp, $size, 0, $x1, $y1+$despl, $white, $font_path, $hora);
-
-		imagettftext($stamp, $size, 0, $x1, $y1+($despl*2), $white, $font_path, "M 8 C 10");
+		imagettftext($stamp, $size, 0, $x1, $y1+($despl*2), $white, $font_path, $string_direccion);
 
 		//imagefilledrectangle($stamp, 0, 0, 99, 69, 0x0000FF);
 		//imagefilledrectangle($stamp, 9, 9, 90, 60, 0xFFFFFF);

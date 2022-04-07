@@ -71,6 +71,9 @@ log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."fin graba temp\n");
 $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
 log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa trae residente\n");
 
+$datos_residente=trae_datos_residente($CONEXION, $residente);
+log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa trae trae_datos_residente\n");
+
 
 
 #-------------------------------------------------------------------
@@ -96,9 +99,11 @@ log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa genera nombre\n");
 
 //echo "path: ".$path.$nombre."\n";
 
-//function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 $fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
-estampar($nom_temp, $path.$nombre, $fecha_toma, $data["FECHA_HORA"], $mzna=0, $casa=0);
+
+
+
+estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
 log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa estampar\n");
 
 
