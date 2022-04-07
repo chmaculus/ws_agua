@@ -26,7 +26,6 @@ RESPUESTAS JSON
 
 
 $data = $dataa;
-$path="\\\\10.231.45.108\imagenes\\";
 
  //log_this("log/dataaa.log",print_r($data,true));
 // log_this("log/bb.log","periodo: ".$data["PERIODO"]."\n");
@@ -276,6 +275,7 @@ function genera_nombre($codigo_cliente, $id_medidor, $periodo=0){
 	return $nombre;
 }
 #---------------------------------------------------------------------------
+
 
 
 ?>
