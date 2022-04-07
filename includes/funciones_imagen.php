@@ -2,10 +2,6 @@
 
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 
-	echo "fecha: ".$fecha."\n";
-	echo "hora: ".$hora."\n";
-
-
 //$fecha="20220407";
 $anio = substr($fecha, 0, 4);
 $mes = substr($fecha, 4, 2);
