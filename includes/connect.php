@@ -23,10 +23,14 @@ $basededatos = $tabla_string[1];
 */
 
 ///// LOCAL
+//$server = "(host)\(instancia)";
 $server = "10.231.45.205\sql2019";
 $username ="debo";
 $password ="debo";
 $database ="DOSSA_110322022";
+
+//path de destino donde se van a almacenar las imagenes
+$path="\\\\10.231.45.108\imagenes\\";
 
 
 $connectionInfo = array("Database"=>$database, "UID"=>$username, "PWD"=>$password);
