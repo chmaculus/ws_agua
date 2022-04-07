@@ -111,7 +111,7 @@ unlink($nom_temp);
 //verifica si el registro ya existe
 if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 	// Test para saber si ya existe la entrada en la BDD:
-	$query1 = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = ".$data["ID_MED"]." AND PER = '".$data["PERIODO"]."'";
+	$query1 = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = '".$data["ID_MED"]."' AND PER = '".$data["PERIODO"]."'";
 
 	$result = sqlsrv_query($CONEXION, $query1, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
   log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
