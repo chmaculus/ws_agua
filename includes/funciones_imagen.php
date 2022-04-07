@@ -2,8 +2,8 @@
 
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 
-	echo "imagen_origen $imagen_origen\n";
-	echo "imagen_dest $imagen_destino\n";
+//	echo "imagen_origen $imagen_origen\n";
+//	echo "imagen_dest $imagen_destino\n";
 	// Load the stamp and the photo to apply the watermark to
 	$im = imagecreatefromjpeg($imagen_origen);
 
@@ -93,7 +93,6 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 		// Save the image to file and free memory
 		//header('Content-Type: image/png');
 		$aa=str_replace(".jpg",".png",$imagen_destino);
-		echo "img dest: ".$aa."\n";
 		imagepng($im, $aa);
 		imagedestroy($im);
 
