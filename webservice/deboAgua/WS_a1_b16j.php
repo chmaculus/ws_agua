@@ -293,7 +293,7 @@ function genera_nombre($codigo_cliente, $id_medidor, $periodo=0){
 		for($i=6;$i>$len_cli;$i--){
 			$istr=$istr."0";
 		}
-	$nombre="L_".$cstr.$codigo_cliente."_".$istr.$id_medidor.$periodo.".jpg";
+	$nombre="L_".$cstr.$codigo_cliente."_".$istr.$id_medidor."_".$periodo.".jpg";
 	//echo $nombre."\n";
 	return $nombre;
 }
