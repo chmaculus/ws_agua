@@ -163,7 +163,9 @@ if($rows<1){
 			"PERIODO" => '"'.$data["PERIODO"].'"',
 			"ERROR" => "Error al insertar registro"
 		);
-			echo json_encode($array);
+		$json=json_encode($array);
+		echo str_replace('\\"','',$json);
+			
 			exit;
 
 	}
@@ -179,7 +181,8 @@ if($rows<1){
 				"MENSAJE" => "Se inserto correctamente",
 				"REGISTROS_AFECTADOS" => "$affected"
 			);
-			echo json_encode($array);
+		$json=json_encode($array);
+		echo str_replace('\\"','',$json);
 			exit;
 
 	}
@@ -229,7 +232,8 @@ if($rows>0){
 				"PERIODO" => '"'.$data["PERIODO"].'"',
 				"ERROR" => "Error al actualizar registro"
 			);
-			echo json_encode($array);
+		$json=json_encode($array);
+		echo str_replace('\\"','',$json);
 			exit;
 	}
 
@@ -243,7 +247,8 @@ if($rows>0){
 				"MENSAJE" => "Se actualizo correctamente",
 				"REGISTROS_AFECTADOS" => '"'.$affected.'"'
 			);
-			echo json_encode($array);
+		$json=json_encode($array);
+		echo str_replace('\\"','',$json);
 			exit;
 	}
 
@@ -261,7 +266,8 @@ $array=array(
 	"STATUS" => "Los datos se almacenaron correctamente"
 	
 );
-	echo json_encode($array);
+		$json=json_encode($array);
+		echo str_replace('\\"','',$json);
 	exit;
 #------------------------------------------------------------------
 
