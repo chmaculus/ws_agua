@@ -1,7 +1,7 @@
 <?php // A1-B1 = TODAS LAS RUTAS [FIABILIZADO 16/12/2011]
 
 	global $CONEXION;
-        file_put_contents("log.txt", "1");
+        file_put_contents("log.txt", date("H:i:s")."WS_a1_b1j\n");
 	
 	$SQL = "SELECT * FROM VI_AGUA_RUTAS ORDER BY ID";
 	$VI_AGUA_RUTAS = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
@@ -73,7 +73,8 @@
 		$RETURN .= "</VISTA_AGUA_RUTAS>";
 		$array_return=array('CNT'=> $entradas, 'RUTA' => $array_rutas);
 
-		$RETURN=json_encode($array_return);
+		$string=json_encode($array_return);
+		$RETURN=str_replace('\\"','',$string);
 		// log_this("log/ws_a1_b1j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
 		// log_this("log/ws_a1_b1j_array.log",date("H:i:s")."\n".print_r($array_entradas,true)."\n\n");
 		// log_this("log/ws_a1_b1j_arrayn.log",date("H:i:s")."\n".print_r($array_n,true)."\n\n");
