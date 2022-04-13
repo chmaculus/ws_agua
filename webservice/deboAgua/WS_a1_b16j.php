@@ -108,7 +108,7 @@ log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa estampar\n");
 
 
 //elimino temporal
-unlink($nom_temp);
+//unlink($nom_temp);
 
 
 
@@ -119,7 +119,11 @@ if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 	$query1 = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = ".$data["ID_MED"]." AND PER = '".$data["PERIODO"]."'";
 
 	$result = sqlsrv_query($CONEXION, $query1, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
-  log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+	if(sqlsrv_errors()){
+		log_this("log/errores.log",date("H:i:s")."\n".$query1."\n");
+		log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+	}
+  
 
 	//$result = sqlsrv_query($CONEXION, $query1);
 	$rows=sqlsrv_num_rows($result);
@@ -147,6 +151,12 @@ if($rows<1){
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
 	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
+
+	if(sqlsrv_errors()){
+		log_this("log/errores.log",date("H:i:s")."\n".$SQL."\n");
+		log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+	}
+
 	sqlsrv_commit($CONEXION);
 
 	
@@ -216,8 +226,19 @@ if($rows>0){
 	log_this("log/sql".date("Y-m").".log",$SQL."\n");
 	
 	$RESP_UPDATE = sqlsrv_query($CONEXION, $SQL);
+
+	if(sqlsrv_errors()){
+		log_this("log/errores.log",date("H:i:s")."\n".$SQL."\n");
+		log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+	}
+
 	sqlsrv_commit($CONEXION);
 	
+	if(sqlsrv_errors()){
+		log_this("log/errores.log",date("H:i:s")."\n".$query1."\n");
+		log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
+	}
+
 	$affected=sqlsrv_rows_affected($RESP_UPDATE);
 
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s ").print_r($RESP_UPDATE,true)." \n");

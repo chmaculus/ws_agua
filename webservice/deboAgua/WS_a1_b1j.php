@@ -3,7 +3,7 @@
 	global $CONEXION;
         file_put_contents("log.txt", date("H:i:s")."WS_a1_b1j\n");
 	
-	$SQL = "SELECT * FROM VI_AGUA_RUTAS ORDER BY ID";
+	$SQL = "SELECT top 4 * FROM VI_AGUA_RUTAS ORDER BY ID";
 	$VI_AGUA_RUTAS = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 	
 	if(!isset($VI_AGUA_RUTAS)){
