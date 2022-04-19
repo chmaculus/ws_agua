@@ -2,11 +2,11 @@
 
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 
-//$fecha="20220407";
-$anio = substr($fecha, 0, 4);
-$mes = substr($fecha, 4, 2);
-$dia = substr($fecha, 6, 2);
-$fecha="$dia/$mes/$anio";
+// $anio = substr($fecha, 0, 4);
+// $mes = substr($fecha, 4, 2);
+// $dia = substr($fecha, 6, 2);
+// $fecha="$dia/$mes/$anio";
+
 //	echo "imagen_origen $imagen_origen\n";
 //	echo "imagen_dest $imagen_destino\n";
 	// Load the stamp and the photo to apply the watermark to

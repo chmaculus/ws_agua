@@ -19,7 +19,7 @@ ver config
 if exist folder ok
 grabo archivo
 
-construr consultas en base al array OK
+construir consultas en base al array OK
 ejecuto consultas OK
 generar logs OK
 
@@ -31,7 +31,7 @@ RESPUESTAS JSON
 
 
 
-$data = $dataa;
+//$data = $dataa;
 
  //log_this("log/dataaa.log",print_r($data,true));
 // log_this("log/bb.log","periodo: ".$data["PERIODO"]."\n");
@@ -116,7 +116,7 @@ log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa estampar\n");
 //verifica si el registro ya existe
 if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 	// Test para saber si ya existe la entrada en la BDD:
-	$query1 = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = ".$data["ID_MED"]." AND PER = '".$data["PERIODO"]."'";
+	$query1 = "SELECT * FROM AGUA_MEDICION WHERE ID_MED = '".$data["ID_MED"]."' AND PER = '".$data["PERIODO"]."'";
 
 	$result = sqlsrv_query($CONEXION, $query1, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 	if(sqlsrv_errors()){

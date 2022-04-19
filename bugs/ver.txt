@@ -1,0 +1,4 @@
+
+
+cuando se cambia la configuracion hay que cerrar la aplicacion y volver a abrit paraq que tome los cambios
+

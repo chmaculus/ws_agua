@@ -20,20 +20,21 @@ $ERROR = "";
 $buffer = "";
 
 
-//log_this("log/aa.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
+
 
 
 
 try {
     log_this("log/bb.log",date("H:i:s")." try\n");
-    $dataa = json_decode(file_get_contents('php://input'),true);
+    $data = json_decode(file_get_contents('php://input'),true);
+    global $data;
 
-    if($dataa){
+    if($data){
         
-        log_this("log/json_raw.json",file_get_contents('php://input')."\ns");
-        log_this("log/data.log",print_r($data,TRUE));
-        if($dataa["MODULO"]=="AGUA"){
-            if($dataa["ACCION"]=="EXPORT_DATA"){
+        log_this("log/json_raw.json",file_get_contents('php://input')."\n");
+        //log_this("log/data.log",print_r($data,TRUE));
+        if($data["MODULO"]=="AGUA"){
+            if($data["ACCION"]=="EXPORT_DATA"){
                 log_this("log/bb.log",date("H:i:s")." EXPORT_DATA\n");
                 include_once("./webservice/deboAgua/WS_a1_b16j.php");
                 echo $RETURN;
@@ -42,6 +43,7 @@ try {
         }
 
     }else{
+        log_this("log/request.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
         log_this("log/bb.log",date("H:i:s")." no data\n");
     }
 
@@ -123,7 +125,7 @@ try {
                 log_this("log/bb.log", date("H:i:s")."\nvar1: ".$var1);
                 require($var1);
             } else {
-                // Si B no está:
+                // Si B no estÃ¡:
                 $RETURN .= "<PARAMETROS>";
                 $RETURN .= "<A>1</A>";
                 $RETURN .= "<B1>TODAS LAS RUTAS</B1>";
@@ -196,7 +198,7 @@ try {
             if (isset($_REQUEST['b'])) {
                 require(".\\webservice\\deboSancion\\WS_a2_b" . $_REQUEST['b'] . ".php");
             } else {
-                // Si B no está:
+                // Si B no estÃ¡:
                 $RETURN .= "<PARAMETROS>";
                 $RETURN .= "<A>2</A>";
                 $RETURN .= "<B1>TODOS LOS RESIDENTES</B1>";
@@ -258,7 +260,7 @@ try {
             if (isset($_REQUEST['b'])) {
                 require(".\\webservice\\deboInventario\\WS_a3_b" . $_REQUEST['b'] . ".php");
             } else {
-                // Si B no está:
+                // Si B no estÃ¡:
                 $RETURN .= "<PARAMETROS>";
                 $RETURN .= "<A>3</A>";
                 $RETURN .= "<B1>INVENTARIOS DISPONIBLES</B1>";
@@ -322,7 +324,7 @@ try {
             if (isset($_REQUEST['b'])) {
                 require(".\\webservice\\deboRecovery\\WS_a4_b" . $_REQUEST['b'] . ".php");
             } else {
-                // Si B no está:
+                // Si B no estÃ¡:
                 $RETURN .= "<PARAMETROS>";
                 $RETURN .= "<A>4</A>";
                 $RETURN .= "<B99>FULL RECOVER</B99>";
@@ -381,7 +383,7 @@ try {
             if (isset($_REQUEST['b'])) {
                 require(".\\webservice\\deboCompra\\WS_a5_b" . $_REQUEST['b'] . ".php");
             } else {
-                // Si B no está:
+                // Si B no estÃ¡:
                 $RETURN .= "<PARAMETROS>";
                 $RETURN .= "<A>5</A>";
                 $RETURN .= "<B1>OPERADORES (habilitados para generar actos de compra)</B1>";
@@ -444,7 +446,7 @@ try {
             if (isset($_REQUEST['b'])) {
                 require(".\\webservice\\deboPiscina\\WS_a" . $_REQUEST['a'] . "_b" . $_REQUEST['b'] . ".php");
             } else {
-                // Si B no está:
+                // Si B no estÃ¡:
                 $RETURN .= "<PARAMETROS>";
                 $RETURN .= "<A>" . $_REQUEST['a'] . "</A>";
                 $RETURN .= "<B1>OPERADORES (habilitados para generar actos de compra)</B1>";
