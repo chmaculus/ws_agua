@@ -9,7 +9,7 @@
 			$rutas = $_REQUEST['r'];
 
 		// Buscamos las rutas que mostrar:
-			$SQL = "SELECT top 1 * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN";
+			$SQL = "SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN";
 		$VI_AGUA_A_TABLET = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 		if(!isset($VI_AGUA_A_TABLET)){
