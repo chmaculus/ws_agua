@@ -1,10 +1,9 @@
 <?php 
-if (file_exists("log/ws_a1_b16j.log")){
-	unlink("log/ws_a1_b16j.log");
-}
+// if (file_exists("log/ws_a1_b16j".date("Ym").".log")){
+// 	unlink("log/ws_a1_b16j".date("Ym").".log");
+// }
 
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."llega\n");
-
+log_this("log/ws_a1_b16j".date("Ym").".log","\n\n".date("d H:i:s")." llega - ".$_SERVER['HTTP_USER_AGENT']."\n");
 
 /*
 
@@ -23,7 +22,7 @@ construir consultas en base al array OK
 ejecuto consultas OK
 generar logs OK
 
-crear carperas periodo
+crear carpetas periodo
 error al almacenar imagen
 RESPUESTAS JSON
 
@@ -39,7 +38,18 @@ RESPUESTAS JSON
 /* falta codigo_cliente*/
 
 
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."inicio graba temp\n");
+
+$aa=split("/",$data["PERIODO"]);
+$temp=$aa[1]."/".$aa[0];
+$data["PERIODO"]=$temp;
+
+
+
+
+
+
+
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."inicio graba temp\n");
 #-------------------------------------------------------------------
 ///graba temporal imagen
 $imagen=base64_decode($data["IMAGEN"]);
@@ -57,22 +67,29 @@ if (fwrite($gestor, $imagen) === FALSE) {
 			"PERIODO" => '"'.$data["PERIODO"].'"',
 			"ERROR" => "Error al grabar archivo temporal"
 		);
-			echo json_encode($array);
+		log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")."error al grabar temporal\n");
+		echo json_encode($array);
 			exit;
 }else{
+	log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")."temporal almacenado OK\n");
 	fclose($gestor);
 	$file_write=1;
 }
 $imagen="";
 #-------------------------------------------------------------------
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."fin graba temp\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."fin graba temp\n");
 
 
+
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."llama residente ".$data["ID_MED"]." \n");
 $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa trae residente\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa trae residente\n");
 
+
+
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."llama trae_datos_residente $residente\n");
 $datos_residente=trae_datos_residente($CONEXION, $residente);
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa trae trae_datos_residente\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa trae trae_datos_residente\n");
 
 
 
@@ -88,27 +105,28 @@ if(is_writable($path)){
 	$dest_folder=1;
 }
 #-------------------------------------------------------------------
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa cartpeta destino\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa carpeta destino\n");
 
 
-
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."genera nombre res: $residente  id_med: ".$data["ID_MED"]." periodo: ".$data["PERIODO"]." \n");
 $nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
 $nombre_png=str_replace(".jpg",".png",$nombre);
-
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa genera nombre\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa genera nombre $nombre \n");
 
 //echo "path: ".$path.$nombre."\n";
 
-$fecha_toma=date("d/m/Y",strtotime($data["FECHA_TOMA"]));
+$tmp=split("/",$data["FECHA_TOMA"]);
+$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 
 
-
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
 estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa estampar\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa estampar\n");
 
 
-//elimino temporal
-//unlink($nom_temp);
+#elimino temporal
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."elimina temporal\n");
+unlink($nom_temp);
 
 
 
@@ -127,28 +145,28 @@ if($data["ID_MED"]!="" and $data["PERIODO"]!=""){
 
 	//$result = sqlsrv_query($CONEXION, $query1);
 	$rows=sqlsrv_num_rows($result);
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - query1: ".$query1."\n");
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - rows: ".$rows."\n");
+	log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")." - query1: ".$query1."\n");
+	log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")." - rows: ".$rows."\n");
 }
 #------------------------------------------------------------------
-log_this("log/ws_a1_b16j.log", date("Y-m-d H:i:s")."pasa verifica registro\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa verifica registro\n");
 
 
 
 
-$string_fecha=$data['FECHA_TOMA']." ".$data['HORA_TOMA'];
+$string_fecha=$fecha_toma." ".$data['HORA_TOMA'];
 
 
 #------------------------------------------------------------------
 //no existe registro
 if($rows<1){
+	log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."no existe registro inserta\n");
 	$SQL = "INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
 					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre_png."')";
 
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
 	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
 
@@ -175,10 +193,9 @@ if($rows<1){
 		);
 		$json=json_encode($array);
 		echo str_replace('\\"','',$json);
-			
-			exit;
-
+		exit;
 	}
+
 
 	if(isset($result)){
 		log_this("log/sql".date("Y-m").".log",date("d H:i:s").'se inserto correctamente - ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].'\n');
@@ -193,8 +210,7 @@ if($rows<1){
 			);
 		$json=json_encode($array);
 		echo str_replace('\\"','',$json);
-			exit;
-
+		exit;
 	}
 }
 #------------------------------------------------------------------
@@ -205,6 +221,7 @@ if($rows<1){
 #------------------------------------------------------------------
 //ya existe el registro. actualizo
 if($rows>0){
+	log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."existe registro actualiza\n");
 	$SQL = "update AGUA_MEDICION set 
 								LEAN='".$data['LEAN']."',
 								LEAC='".$data['LEAC']."', 
@@ -222,7 +239,6 @@ if($rows>0){
 					";
 
 
-	log_this("log/sql".date("Y-m").".log",date("d H:i:s")." - ".$_SERVER['HTTP_USER_AGENT']."\n");
 	log_this("log/sql".date("Y-m").".log",$SQL."\n");
 	
 	$RESP_UPDATE = sqlsrv_query($CONEXION, $SQL);
@@ -255,7 +271,7 @@ if($rows>0){
 			);
 		$json=json_encode($array);
 		echo str_replace('\\"','',$json);
-			exit;
+		exit;
 	}
 
 	if(isset($RESP_UPDATE)){

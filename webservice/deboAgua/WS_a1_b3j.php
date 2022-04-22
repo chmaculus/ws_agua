@@ -9,7 +9,7 @@
 			$rutas = $_REQUEST['r'];
 
 		// Buscamos las rutas que mostrar:
-			$SQL = "SELECT top 2 * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN";
+			$SQL = "SELECT top 1 * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN";
 		$VI_AGUA_A_TABLET = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 		if(!isset($VI_AGUA_A_TABLET)){
@@ -80,7 +80,7 @@
 						/*CALLE-CALLE*/
 						$REG_VI_AGUA_A_TABLET['CALLE']=strval(trim($REG_VI_AGUA_A_TABLET['CALLE']));
 						$REG_VI_AGUA_A_TABLET['CALLE']=strval(utf8_encode($REG_VI_AGUA_A_TABLET['CALLE']));
-						log_this("log/ws_a1_b3j_calle.log",date("H:i:s")."\n".$REG_VI_AGUA_A_TABLET['CALLE']."\n\n");
+						//log_this("log/ws_a1_b3j_calle.log",date("H:i:s")."\n".$REG_VI_AGUA_A_TABLET['CALLE']."\n\n");
 			
 						/*NUMERO-NUMERO*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['NUMERO'])) == false) {
@@ -177,9 +177,9 @@
 				
 			}//end while
 			
+			  //log_this("log/ws_a1_b3j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
 			 // log_this("log/ws_a1_b3j_medicion.log",date("H:i:s")."\n".print_r($array_medicion,true)."\n\n");
 			 // log_this("log/ws_a1_b3j_error.log",date("H:i:s")."\n".print_r($array_error,true)."\n\n");
-			  log_this("log/ws_a1_b3j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
 
 	}		
 ?>

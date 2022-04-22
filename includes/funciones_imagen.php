@@ -57,11 +57,12 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 		*/
 
 		// First we create our stamp image manually from GD
-		$stamp = imagecreatetruecolor(500, 250);
-		$x1=30;
-		$y1=80;
-		$size=65;
-		$despl=70;
+		$stamp = imagecreatetruecolor(200, 100);
+		$x1=10;
+		$y1=30;
+		$size=25;
+		$despl=33;
+
 
 		/* datos que se imprimen en el estampado de la imagen*/
 		$string_direccion="M".$mzna." C".$casa;

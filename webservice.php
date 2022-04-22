@@ -23,9 +23,9 @@ $buffer = "";
 
 
 
-
+unlink("log/webservice.log");
 try {
-    log_this("log/bb.log",date("H:i:s")." try\n");
+    log_this("log/webservice.log",date("H:i:s")." try\n");
     $data = json_decode(file_get_contents('php://input'),true);
     global $data;
 
@@ -35,7 +35,7 @@ try {
         //log_this("log/data.log",print_r($data,TRUE));
         if($data["MODULO"]=="AGUA"){
             if($data["ACCION"]=="EXPORT_DATA"){
-                log_this("log/bb.log",date("H:i:s")." EXPORT_DATA\n");
+                log_this("log/webservice.log",date("H:i:s")." EXPORT_DATA\n");
                 include_once("./webservice/deboAgua/WS_a1_b16j.php");
                 echo $RETURN;
                 exit;
@@ -44,7 +44,7 @@ try {
 
     }else{
         log_this("log/request.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
-        log_this("log/bb.log",date("H:i:s")." no data\n");
+        log_this("log/webservice.log",date("H:i:s")." no data\n");
     }
 
 
@@ -67,7 +67,7 @@ try {
     $C_LOG = "";
 
     $handle = @fopen("config.ini", "r");
-    log_this("log/bb.log",date("H:i:s")." config\n");
+    log_this("log/webservice.log",date("H:i:s")." config\n");
     if ($handle) {
         while (($buffer = fgets($handle, 4096)) !== false) {
             $tab = explode("=", $buffer);
@@ -101,7 +101,7 @@ try {
         fclose($handle);
     }
 
-    log_this("log/bb.log",date("H:i:s")." end while\n");
+    log_this("log/webservice.log",date("H:i:s")." end while\n");
 
 
 
@@ -122,7 +122,7 @@ try {
 
             if (isset($_REQUEST['b'])) {
                 $var1=".\\webservice\\deboAgua\\WS_a1_b" . $_REQUEST['b'] . ".php";
-                log_this("log/bb.log", date("H:i:s")."\nvar1: ".$var1);
+                log_this("log/webservice.log", date("H:i:s")."\nvar1: ".$var1);
                 require($var1);
             } else {
                 // Si B no está:
