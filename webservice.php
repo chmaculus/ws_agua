@@ -476,6 +476,7 @@ try {
 
 
         if($_REQUEST['b']=='1j' or $_REQUEST['b']=='3j' or $_REQUEST['b']=='4j' or $_REQUEST['b']=='16j' OR is_array($_POST) OR is_array($_REQUEST)){
+            log_this("log/webservice_return".date("Ym").".log",date("d H:i:s")." \n".print_r($_REQUEST,true)."\n".$RETURN."\n");
             echo $RETURN;
         }else{
             echo trim('<?xml version="1.0" encoding="ISO-8859-1"?>' . $RETURN);
