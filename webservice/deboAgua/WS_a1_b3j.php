@@ -9,7 +9,7 @@
 			$rutas = $_REQUEST['r'];
 
 		// Buscamos las rutas que mostrar:
-			$SQL = "SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN";
+			$SQL = "SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN,per desc";
 		$VI_AGUA_A_TABLET = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 		if(!isset($VI_AGUA_A_TABLET)){
@@ -42,6 +42,7 @@
 				if (is_numeric($valor_ID) == true && intval($valor_ID) >= 0) {
 					if (in_array($valor_ID, $tabla_PK) == false) {
 						$q="select * from agua_medidor where id='".$REG_VI_AGUA_A_TABLET['ID_MED']."'";
+						log_this("log/ws_a1_b3j".date("Ym").".log",$q."\n");
 						//echo "q: ".$q."\n";
 						$result = sqlsrv_query($CONEXION, $q);
 						//$arr1=sqlsrv_fetch($result, 0);
@@ -125,6 +126,7 @@
 							$REG_VI_AGUA_A_TABLET['LEAN'] = strval(0);
 						}
 						$REG_VI_AGUA_A_TABLET['LEAN']=strval(round($REG_VI_AGUA_A_TABLET['LEAN'],0));
+						$REG_VI_AGUA_A_TABLET['ULTIMA_LECTURA']=$REG_VI_AGUA_A_TABLET['LEAN'];
 			
 						/*LEAC-LEAC*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['LEAC'])) == false) {
@@ -177,7 +179,7 @@
 				
 			}//end while
 			
-			  //log_this("log/ws_a1_b3j_return.log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
+			  log_this("log/ws_a1_b3j_return".date("Ym").".log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
 			 // log_this("log/ws_a1_b3j_medicion.log",date("H:i:s")."\n".print_r($array_medicion,true)."\n\n");
 			 // log_this("log/ws_a1_b3j_error.log",date("H:i:s")."\n".print_r($array_error,true)."\n\n");
 
