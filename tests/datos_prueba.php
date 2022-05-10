@@ -41,7 +41,7 @@ while ($data = sqlsrv_fetch_array($result,SQLSRV_FETCH_ASSOC)){
 							"MODULO" => "AGUA",
 							"ACCION" => "EXPORT_DATA",
 							"ID_MED" => '"'.$data["ID_MED"].'"',
-							"PERIODO" => '"2022/04"',
+							"PERIODO" => '"04/2022"',
 							"LEAN" => '"'.$data["LEAN"].'"',
 							"LEAC" => '"'.$data["LEAC"].'"',
 							"VAL" => "-1",
@@ -64,7 +64,7 @@ while ($data = sqlsrv_fetch_array($result,SQLSRV_FETCH_ASSOC)){
 		//$string=stripslashes();
 		$string=str_replace('\\"','',$json);
 
-		log_this("log/".$data["ID_MED"].".json",$string);
+		log_this("json/".$data["ID_MED"].".json",$string);
 		//log_this("log/".$data["ID_MED"].".json",$array);
 	}
 	//echo "03<br>";

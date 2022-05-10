@@ -9,3 +9,5 @@ log\.txt
 log/*
 tmp/*
 
+/tests/json/*
+

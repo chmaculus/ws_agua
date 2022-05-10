@@ -99,8 +99,8 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 
 		// Save the image to file and free memory
 		//header('Content-Type: image/png');
-		$aa=str_replace(".jpg",".png",$imagen_destino);
-		imagepng($im, $aa);
+		//$aa=str_replace(".jpg",".png",$imagen_destino);
+		imagejpeg($im, $imagen_destino);
 		imagedestroy($im);
 
 }
