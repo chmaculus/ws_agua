@@ -235,7 +235,7 @@ if($rows>0){
 								MODO='A', 
 								AUTORIZADO='0', 
 								PATH_FOTO='".$path.$nombre_png."',
-								ID_TABLET='".$data['ID_TABLET']."', 
+								ID_TABLET='".$data['ID_TABLET']."'
 									where ID_MED='".$data["ID_MED"]."' and 
 											PER='".$data["PERIODO"]."' 
 
@@ -252,6 +252,7 @@ if($rows>0){
 		log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
 	}
 
+	$affected=sqlsrv_rows_affected($RESP_UPDATE);
 	sqlsrv_commit($CONEXION);
 	
 	if(sqlsrv_errors()){
@@ -259,7 +260,6 @@ if($rows>0){
 		log_this("log/errores.log",date("H:i:s")."\n".print_r( sqlsrv_errors(), true));
 	}
 
-	$affected=sqlsrv_rows_affected($RESP_UPDATE);
 
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s ").print_r($RESP_UPDATE,true)." \n");
 	log_this("log/sql".date("Y-m").".log",date("d H:i:s ")." affected ".$affected." \n");
