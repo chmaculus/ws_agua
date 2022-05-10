@@ -126,13 +126,13 @@
 							$REG_VI_AGUA_A_TABLET['LEAN'] = strval(0);
 						}
 						$REG_VI_AGUA_A_TABLET['LEAN']=strval(round($REG_VI_AGUA_A_TABLET['LEAN'],0));
-						$REG_VI_AGUA_A_TABLET['ULTIMA_LECTURA']=$REG_VI_AGUA_A_TABLET['LEAN'];
 			
 						/*LEAC-LEAC*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['LEAC'])) == false) {
 							$REG_VI_AGUA_A_TABLET['LEAC'] = strval(0);
 						}
 						$REG_VI_AGUA_A_TABLET['LEAC']=strval(round($REG_VI_AGUA_A_TABLET['LEAC'],0));
+						$REG_VI_AGUA_A_TABLET['ULTIMA_LECTURA']=$REG_VI_AGUA_A_TABLET['LEAC'];
 			
 						/*PROMEDIO-PROMEDIO*/
 						if (is_numeric(trim($REG_VI_AGUA_A_TABLET['PROMEDIO'])) == false) {
