@@ -24,6 +24,8 @@ $buffer = "";
 
 
 unlink("log/webservice.log");
+
+log_this("log/request.log",date("d H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 try {
     log_this("log/webservice.log",date("H:i:s")." try\n");
     $data = json_decode(file_get_contents('php://input'),true);
@@ -43,7 +45,6 @@ try {
         }
 
     }else{
-        log_this("log/request.log",date("H:i:s")."\narr_request\n".print_r($_REQUEST,true));
         log_this("log/webservice.log",date("H:i:s")." no data\n");
     }
 

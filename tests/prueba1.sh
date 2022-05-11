@@ -20,7 +20,7 @@ destino='./a1b3j.json'
 
 
 #a1 corresponde a agua 3j a require 3j
-curl -X POST $url -F 'a=1' -F 'b=3j' -F 'r=21' >$destino
+curl -X POST $url -F 'a=1' -F 'b=3j' -F 'r=1' >$destino
 
 
 

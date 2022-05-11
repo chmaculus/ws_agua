@@ -74,7 +74,8 @@
 						$REG_VI_AGUA_A_TABLET['DNI']=strval(trim($REG_VI_AGUA_A_TABLET['DNI']));
 						
 						/*NOM-NOM*/
-						$REG_VI_AGUA_A_TABLET['NOM']=strval(trim($REG_VI_AGUA_A_TABLET['NOM']));
+						$REG_VI_AGUA_A_TABLET['NOM']=strval(trim(utf8_encode($REG_VI_AGUA_A_TABLET['NOM'])));
+						log_this("log/nom.txt",date("H:i:s")."id_med: ".$valor_ID." |".$REG_VI_AGUA_A_TABLET['NOM']."|\n");
 						
 						/*TEL-TEL*/
 						$REG_VI_AGUA_A_TABLET['TEL']=strval(trim($REG_VI_AGUA_A_TABLET['TEL']));
