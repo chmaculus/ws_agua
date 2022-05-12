@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+#----------------------------------------------------------------------------------------------
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
 
 // $anio = substr($fecha, 0, 4);
@@ -104,6 +108,119 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 		imagedestroy($im);
 
 }
+#----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+#----------------------------------------------------------------------------------------------
+function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_toma){
+
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." inicio graba temp\n");
+					///graba temporal imagen
+					$imagen=base64_decode($data["IMAGEN"]);
+
+					$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
+
+					$gestor = fopen($nom_temp, 'w');
+					if (fwrite($gestor, $imagen) === FALSE) {
+						fclose($gestor);
+						$file_write=0;
+							$array=array(	
+								"MODULO" => "AGUA",
+								"ACCION" => "EXPORT_DATA",
+								"ID_MED" => '"'.$id_med.'"',
+								"PERIODO" => '"'.$periodo.'"',
+								"ERROR" => "Error al grabar archivo temporal"
+							);
+							log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")." error al grabar temporal\n");
+							echo json_encode($array);
+								exit;
+					}else{
+						log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")." temporal almacenado OK\n");
+						fclose($gestor);
+						$file_write=1;
+					}
+					$imagen="";
+					#-------------------------------------------------------------------
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." fin graba temp\n");
+
+
+
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama residente ".$id_med." \n");
+					$residente=medidor_trae_residente($CONEXION, $id_med);
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa trae residente\n");
+
+
+
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama trae_datos_residente $residente\n");
+					$datos_residente=trae_datos_residente($CONEXION, $residente);
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa trae trae_datos_residente\n");
+
+
+
+					#-------------------------------------------------------------------
+					//verifica / crea  carpeta destino
+					$periodo=str_replace("/","",$periodo);
+					if(is_writable($path)){
+							$path=$path.$periodo."\\";
+							if (!file_exists($path)) {
+							    mkdir($path, 0777, true);
+							}
+					}else{
+						$dest_folder=1;
+					}
+					#-------------------------------------------------------------------
+					log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s"). " pasa carpeta destino\n");
+
+
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")."  genera nombre res: $residente  id_med: ".$id_med." periodo: ".$periodo." \n");
+					$nombre=genera_nombre($residente, $id_med, $periodo);
+					//$nombre_png=str_replace(".jpg",".png",$nombre);
+					log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s"). " pasa genera nombre $nombre \n");
+
+					//echo "path: ".$path.$nombre."\n";
+
+					$tmp=split("/",$fecha_toma);
+					$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
+
+
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$fecha_toma." htoma: ".$hora_toma." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
+					estampar($nom_temp, $path.$nombre, $fecha_toma, $hora_toma, $datos_residente["MZNA"], $datos_residente["CASA"]);
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa estampar\n");
+
+
+					#elimino temporal
+					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." elimina temporal\n");
+					unlink($nom_temp);
+					#fin graba imagen
+}
+#----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

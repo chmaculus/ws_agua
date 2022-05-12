@@ -10,7 +10,7 @@
 
 		// Buscamos las rutas que mostrar:
 			$SQL = "SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN,per desc";
-			log_this("log/sql".date("Ym"),"WS_a1_b3j: ".$SQL."\n");
+			log_this("log/sql".date("Ym").".log","WS_a1_b3j: ".date("d H:i:s")." ".$SQL."\n");
 		$VI_AGUA_A_TABLET = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 		if(!isset($VI_AGUA_A_TABLET)){
@@ -43,8 +43,7 @@
 				if (is_numeric($valor_ID) == true && intval($valor_ID) >= 0) {
 					if (in_array($valor_ID, $tabla_PK) == false) {
 						$q="select * from agua_medidor where id='".$REG_VI_AGUA_A_TABLET['ID_MED']."'";
-						log_this("log/ws_a1_b3j".date("Ym").".log",$q.";\n");
-						//echo "q: ".$q."\n";
+						log_this("log/sql".date("Ym").".log","WS_a1_b3j: ".date("d H:i:s")." ".$q."\n");
 						$result = sqlsrv_query($CONEXION, $q);
 						//$arr1=sqlsrv_fetch($result, 0);
 						$arr1=sqlsrv_fetch_array( $result);
@@ -75,7 +74,7 @@
 						
 						/*NOM-NOM*/
 						$REG_VI_AGUA_A_TABLET['NOM']=strval(trim(utf8_encode($REG_VI_AGUA_A_TABLET['NOM'])));
-						log_this("log/nom.txt",date("H:i:s")."id_med: ".$valor_ID." |".$REG_VI_AGUA_A_TABLET['NOM']."|\n");
+						//log_this("log/nom.txt",date("H:i:s")."id_med: ".$valor_ID." |".$REG_VI_AGUA_A_TABLET['NOM']."|\n");
 						
 						/*TEL-TEL*/
 						$REG_VI_AGUA_A_TABLET['TEL']=strval(trim($REG_VI_AGUA_A_TABLET['TEL']));
