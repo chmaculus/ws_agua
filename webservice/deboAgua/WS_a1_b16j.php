@@ -162,11 +162,18 @@ $string_fecha=$fecha_toma." ".$data['HORA_TOMA'];
 //no existe registro
 if($rows<1){
 	log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."no existe registro inserta\n");
+/*
 	$SQL = "INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO, ID_TABLET) 
 			VALUES 
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
 					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."', '".$data['ID_TABLET']."')";
+*/
+	$SQL = "INSERT INTO AGUA_MEDICION 
+				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
+			VALUES 
+				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
+					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
 
 	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
@@ -224,6 +231,7 @@ if($rows<1){
 //ya existe el registro. actualizo
 if($rows>0){
 	log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."existe registro actualiza\n");
+/*
 	$SQL = "update AGUA_MEDICION set 
 								LEAN='".$data['LEAN']."',
 								LEAC='".$data['LEAC']."', 
@@ -238,7 +246,21 @@ if($rows>0){
 								ID_TABLET='".$data['ID_TABLET']."'
 									where ID_MED='".$data["ID_MED"]."' and 
 											PER='".$data["PERIODO"]."' 
-
+					";
+*/
+	$SQL = "update AGUA_MEDICION set 
+								LEAN='".$data['LEAN']."',
+								LEAC='".$data['LEAC']."', 
+								VAL='-1', 
+								FECHA_TOMA='".$string_fecha."', 
+								ID_ERROR='".$data['ID_ERROR']."', 
+								OBSERVACION='".$data['OBSERVACION']."', 
+								ID_OPE='".$data['ID_OPE']."', 
+								MODO='A', 
+								AUTORIZADO='0', 
+								PATH_FOTO='".$path.$nombre."'
+									where ID_MED='".$data["ID_MED"]."' and 
+											PER='".$data["PERIODO"]."' 
 					";
 
 
