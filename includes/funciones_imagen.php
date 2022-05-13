@@ -170,10 +170,10 @@ function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_to
 
 					//echo "path: ".$path.$nombre."\n";
 
-					$tmp=split("/",$fecha_toma);
-					$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
+					// $tmp=split("/",$fecha_toma);
+					// $fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 
-					echo "nombre: $path.$nombre\n";
+					//echo "nombre: $path$nombre\n";
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$fecha_toma." htoma: ".$hora_toma." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
 					estampar($nom_temp, $path.$nombre, $fecha_toma, $hora_toma, $datos_residente["MZNA"], $datos_residente["CASA"]);
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa estampar\n");
@@ -181,7 +181,7 @@ function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_to
 
 					#elimino temporal
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." elimina temporal\n");
-					//unlink($nom_temp);
+					unlink($nom_temp);
 					#fin graba imagen
 }
 #----------------------------------------------------------------------------------------------

@@ -65,7 +65,7 @@ $data["PERIODO"]=$temp;
 $tmp=split("/",$data["FECHA_TOMA"]);
 $fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 
-
+$periodo=str_replace("/","",$data["PERIODO"]);
 
 
 log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama residente ".$data["ID_MED"]." \n");
@@ -86,7 +86,7 @@ $nombre=genera_nombre($residente, $data["ID_MED"], $periodo);
 log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s"). " pasa genera nombre $nombre \n");
 
 
-
+$path_foto=$path.$periodo."\\";
 
 
 
@@ -151,7 +151,7 @@ if($rows<1){
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
-					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
+					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path_foto.$nombre."')";
 
 	log_this("log/sql".date("Ym").".log",$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
