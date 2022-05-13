@@ -117,11 +117,14 @@ function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $
 
 
 #----------------------------------------------------------------------------------------------
-function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_toma){
+function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_toma, $imagen_base64, $datos_residente, $nombre){
+		//$nombre=genera_nombre($codigo_cliente, $id_medidor, $periodo=0);
+					
+		log_this("log/imagen".date("Ym").".log"," p: ".$path." id: ".$id_med." per: ".$periodo." f: ".$fecha_toma." h: ".$hora_toma."\n");
 
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." inicio graba temp\n");
 					///graba temporal imagen
-					$imagen=base64_decode($data["IMAGEN"]);
+					$imagen=base64_decode($imagen_base64);
 
 					$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
 
@@ -150,18 +153,6 @@ function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_to
 
 
 
-					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama residente ".$id_med." \n");
-					$residente=medidor_trae_residente($CONEXION, $id_med);
-					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa trae residente\n");
-
-
-
-					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama trae_datos_residente $residente\n");
-					$datos_residente=trae_datos_residente($CONEXION, $residente);
-					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa trae trae_datos_residente\n");
-
-
-
 					#-------------------------------------------------------------------
 					//verifica / crea  carpeta destino
 					$periodo=str_replace("/","",$periodo);
@@ -177,17 +168,12 @@ function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_to
 					log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s"). " pasa carpeta destino\n");
 
 
-					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")."  genera nombre res: $residente  id_med: ".$id_med." periodo: ".$periodo." \n");
-					$nombre=genera_nombre($residente, $id_med, $periodo);
-					//$nombre_png=str_replace(".jpg",".png",$nombre);
-					log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s"). " pasa genera nombre $nombre \n");
-
 					//echo "path: ".$path.$nombre."\n";
 
 					$tmp=split("/",$fecha_toma);
 					$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 
-
+					echo "nombre: $path.$nombre\n";
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$fecha_toma." htoma: ".$hora_toma." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
 					estampar($nom_temp, $path.$nombre, $fecha_toma, $hora_toma, $datos_residente["MZNA"], $datos_residente["CASA"]);
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa estampar\n");
@@ -195,12 +181,30 @@ function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_to
 
 					#elimino temporal
 					log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." elimina temporal\n");
-					unlink($nom_temp);
+					//unlink($nom_temp);
 					#fin graba imagen
 }
 #----------------------------------------------------------------------------------------------
 
 
+
+
+#---------------------------------------------------------------------------
+function genera_nombre($codigo_cliente, $id_medidor, $periodo=0){
+	$periodo=str_replace("/","",$periodo);
+	$len_cli=strlen($codigo_cliente);
+		for($i=5;$i>$len_cli;$i--){
+			$cstr=$cstr."0";
+		}
+	$len_med=strlen($id_medidor);
+		for($i=6;$i>$len_cli;$i--){
+			$istr=$istr."0";
+		}
+	$nombre="L_".$cstr.$codigo_cliente."_".$istr.$id_medidor."_".$periodo.".jpg";
+	//echo $nombre."\n";
+	return $nombre;
+}
+#---------------------------------------------------------------------------
 
 
 

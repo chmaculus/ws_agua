@@ -23,7 +23,7 @@ $buffer = "";
 
 
 
-unlink("log/webservice.log");
+unlink("log/webservice".date("Ym").".log");
 
 log_this("log/request".date("Ym").".log",date("d H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 try {

@@ -62,9 +62,28 @@ $aa=split("/",$data["PERIODO"]);
 $temp=$aa[1]."/".$aa[0];
 $data["PERIODO"]=$temp;
 
+$tmp=split("/",$data["FECHA_TOMA"]);
+$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 
 
 
+
+log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama residente ".$data["ID_MED"]." \n");
+$residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
+log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa trae residente\n");
+
+
+
+log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." llama trae_datos_residente $residente\n");
+$datos_residente=trae_datos_residente($CONEXION, $residente);
+log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")." pasa trae trae_datos_residente\n");
+
+
+$periodo=str_replace("/","",$data["PERIODO"]);
+log_this("log/ws_a1_b16j".date("Ym").".log"," ".date("d H:i:s")."  genera nombre res: $residente  id_med: ".$data["ID_MED"]." periodo: ".$periodo." \n");
+$nombre=genera_nombre($residente, $data["ID_MED"], $periodo);
+//$nombre_png=str_replace(".jpg",".png",$nombre);
+log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s"). " pasa genera nombre $nombre \n");
 
 
 
@@ -176,8 +195,8 @@ if($rows<1){
 				"MENSAJE" => "Se inserto correctamente",
 				"REGISTROS_AFECTADOS" => "$affected"
 			);
-
-			graba_imagen($CONEXION, $path, $data["ID_MED"], $data["PERIODO"], $data["FECHA_TOMA"], $data["HORA_TOMA"]);
+			//function graba_imagen($CONEXION, $path, $id_med, $periodo, $fecha_toma, $hora_toma){
+			graba_imagen($CONEXION, $path, $data["ID_MED"], $data["PERIODO"], $data["FECHA_TOMA"], $data["HORA_TOMA"], $data["IMAGEN"], $datos_residente, $nombre);
 
 		$json=json_encode($array);
 		echo str_replace('\\"','',$json);
@@ -324,24 +343,6 @@ DDDDDD: ID de medidor. Longitud 6 caracteres. Se rellena con ceros a la izquierd
 YYYY: año del periodo medido. Longitud 4 caracteres.
 MM: mes del periodo medido. Longitud 2 caracteres. Se rellena con ceros a la izquierda
 */
-
-
-#---------------------------------------------------------------------------
-function genera_nombre($codigo_cliente, $id_medidor, $periodo=0){
-	$periodo=str_replace("/","",$periodo);
-	$len_cli=strlen($codigo_cliente);
-		for($i=5;$i>$len_cli;$i--){
-			$cstr=$cstr."0";
-		}
-	$len_med=strlen($id_medidor);
-		for($i=6;$i>$len_cli;$i--){
-			$istr=$istr."0";
-		}
-	$nombre="L_".$cstr.$codigo_cliente."_".$istr.$id_medidor."_".$periodo.".jpg";
-	//echo $nombre."\n";
-	return $nombre;
-}
-#---------------------------------------------------------------------------
 
 
 
