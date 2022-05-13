@@ -1,6 +1,7 @@
 <?php
 
 function estampar($imagen_origen, $imagen_destino, $fecha=0, $hora=0, $mzna=0, $casa=0){
+//	echo "a:$imagen_origen b: $imagen_destino c:$fecha=0 d:$hora=0 e:$mzna=0 f:$casa";
 
 // $anio = substr($fecha, 0, 4);
 // $mes = substr($fecha, 4, 2);

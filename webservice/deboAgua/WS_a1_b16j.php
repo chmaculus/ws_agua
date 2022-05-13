@@ -47,6 +47,34 @@ $string_fecha=$fecha_toma." ".$data['HORA_TOMA'];
 
 
 
+#-------------------------------------------------------------------
+//verifica / crea  carpeta destino
+$periodo=str_replace("/","",$data["PERIODO"]);
+if(is_writable($path)){
+		$path=$path.$periodo."\\";
+		if (!file_exists($path)) {
+		    mkdir($path, 0777, true);
+		}
+}else{
+	$dest_folder=1;
+}
+#-------------------------------------------------------------------
+log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa carpeta destino\n");
+
+
+
+
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."genera nombre res: $residente  id_med: ".$data["ID_MED"]." periodo: ".$data["PERIODO"]." \n");
+$nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
+//$nombre_png=str_replace(".jpg",".png",$nombre);
+log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa genera nombre $nombre \n");
+
+//echo "path: ".$path.$nombre."\n";
+
+$tmp=split("/",$data["FECHA_TOMA"]);
+$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
+
+
 
 
 
@@ -125,10 +153,10 @@ if($rows>0){
 if($rows<1){
 	log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."no existe registro inserta\n");
 	$SQL = "INSERT INTO AGUA_MEDICION 
-				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO, ID_TABLET) 
+				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
-					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."', '".$data['ID_TABLET']."')";
+					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
 
 	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
@@ -221,6 +249,9 @@ $imagen="";
 #-------------------------------------------------------------------
 log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."fin graba temp\n");
 
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
+estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa estampar\n");
 
 
 log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."llama residente ".$data["ID_MED"]." \n");
@@ -235,35 +266,6 @@ log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa trae trae_dat
 
 
 
-#-------------------------------------------------------------------
-//verifica / crea  carpeta destino
-$periodo=str_replace("/","",$data["PERIODO"]);
-if(is_writable($path)){
-		$path=$path.$periodo."\\";
-		if (!file_exists($path)) {
-		    mkdir($path, 0777, true);
-		}
-}else{
-	$dest_folder=1;
-}
-#-------------------------------------------------------------------
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa carpeta destino\n");
-
-
-log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."genera nombre res: $residente  id_med: ".$data["ID_MED"]." periodo: ".$data["PERIODO"]." \n");
-$nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
-//$nombre_png=str_replace(".jpg",".png",$nombre);
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa genera nombre $nombre \n");
-
-//echo "path: ".$path.$nombre."\n";
-
-$tmp=split("/",$data["FECHA_TOMA"]);
-$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
-
-
-log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
-estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
-log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa estampar\n");
 
 
 #elimino temporal

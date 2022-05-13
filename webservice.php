@@ -33,7 +33,7 @@ try {
 
     if($data){
         
-        log_this("log/json_raw.json",file_get_contents('php://input')."\n");
+        log_this("log/json_raw".date("Ym").".json",date("d H:i:s")." ".file_get_contents('php://input')."\n");
         //log_this("log/data.log",print_r($data,TRUE));
         if($data["MODULO"]=="AGUA"){
             if($data["ACCION"]=="EXPORT_DATA"){
