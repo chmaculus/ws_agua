@@ -43,6 +43,8 @@ $aa=split("/",$data["PERIODO"]);
 $temp=$aa[1]."/".$aa[0];
 $data["PERIODO"]=$temp;
 
+$tmp=split("/",$data["FECHA_TOMA"]);
+$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 $string_fecha=$fecha_toma." ".$data['HORA_TOMA'];
 
 
@@ -71,8 +73,6 @@ log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa genera no
 
 //echo "path: ".$path.$nombre."\n";
 
-$tmp=split("/",$data["FECHA_TOMA"]);
-$fecha_toma=$tmp[2].$tmp[1].$tmp[0];
 
 
 
