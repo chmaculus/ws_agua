@@ -165,6 +165,7 @@
 					sqlsrv_free_stmt($VI_AGUA_A_TABLET);
 					$arr_rtn=array('CNT'=> $entradas, 'MEDICION' => $array_medicion, 'ERR' => $array_error);
 					$RETURN=json_encode($arr_rtn);
+					log_this("log/ws_a1_b3j".date("Ym").".log",date("d H:i:s")."\n".$RETURN);
 					//$RETURN = utf8_encode($RETURN);
 						
 				// Recuperamos el numero de la tablet que hizo este pedido, asi se marca en la BDD que esta tablet se llevo estas rutas:

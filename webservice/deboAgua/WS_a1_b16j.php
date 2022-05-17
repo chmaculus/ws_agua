@@ -118,7 +118,9 @@ if($rows>0){
 				"ACCION" => "EXPORT_DATA",
 				"ID_MED" => '"'.$data["ID_MED"].'"',
 				"PERIODO" => '"'.$data["PERIODO"].'"',
-				"MENSAJE" => "YA EXISTE UNA MEDICION PARA ESTE PERIODO",
+				"REGISTROS_AFECTADOS" => "0",
+				"CODIGO" => "3",
+				"MENSAJE" => "YA EXISTE UNA MEDICION PARA ESTE PERIODO"
 			);
 		$json=json_encode($array);
 		echo str_replace('\\"','',$json);
@@ -181,7 +183,10 @@ if($rows<1){
 			"ACCION" => "EXPORT_DATA",
 			"ID_MED" => '"'.$data["ID_MED"].'"',
 			"PERIODO" => '"'.$data["PERIODO"].'"',
-			"ERROR" => "Error al insertar registro"
+			"REGISTROS_AFECTADOS" => "0",
+			"CODIGO" => "2",
+			"ERROR" => "Error al insertar registro",
+			"MENSAJE" => "Error al insertar registro"
 		);
 		$json=json_encode($array);
 		echo str_replace('\\"','',$json);
@@ -197,6 +202,7 @@ if($rows<1){
 				"ACCION" => "EXPORT_DATA",
 				"ID_MED" => '"'.$data["ID_MED"].'"',
 				"PERIODO" => '"'.$data["PERIODO"].'"',
+				"CODIGO" => "1",
 				"MENSAJE" => "Se inserto correctamente",
 				"REGISTROS_AFECTADOS" => "$affected"
 			);
@@ -235,7 +241,9 @@ if (fwrite($gestor, $imagen) === FALSE) {
 			"ACCION" => "EXPORT_DATA",
 			"ID_MED" => '"'.$data["ID_MED"].'"',
 			"PERIODO" => '"'.$data["PERIODO"].'"',
-			"ERROR" => "Error al grabar archivo temporal"
+			"CODIGO" => "4",
+			"ERROR" => "Error al grabar archivo temporal",
+			"MENSAJE" => "Error al grabar archivo temporal"
 		);
 		log_this("log/ws_a1_b16j".date("Ym").".log",date("d H:i:s")."error al grabar temporal\n");
 		echo json_encode($array);
