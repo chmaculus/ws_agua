@@ -249,10 +249,6 @@ $imagen="";
 #-------------------------------------------------------------------
 log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."fin graba temp\n");
 
-log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
-estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
-log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa estampar\n");
-
 
 log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."llama residente ".$data["ID_MED"]." \n");
 $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
@@ -263,6 +259,10 @@ log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa trae resident
 log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."llama trae_datos_residente $residente\n");
 $datos_residente=trae_datos_residente($CONEXION, $residente);
 log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa trae trae_datos_residente\n");
+
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
+estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
+log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa estampar\n");
 
 
 
