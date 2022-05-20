@@ -1,0 +1,29 @@
+
+paso 1 trae listado de rutas devuelve un json con el listado de rutas
+
+http://localhost/ws_agua/webservice.php
+post a=1 //corresponde a agua
+post b=1j //para traer listado de rutas
+curl -X POST "http://localhost/ws_agua/webservice.php" -F 'a=1' -F 'b=1j'
+json de ejemplo que devuelve
+{"CNT":1,"RUTA":[{"ID":0,"DET":"Ruta asiganda a Manzana: ","ULTPER":"2016\/08","ID_TABLET":0}]}
+
+paso 2 traer los datos de la/s ruta/s seleccionada/s
+http://localhost/ws_agua/webservice.php
+post a=1 //corresponde a agua
+post b=3j //corresponde al modulo que trae los datos de una o mas rutas
+post r=1 //r corresponde a la ruta o rutas a traer
+post r="1,2,3" //para traer 2 o mas rutas separado por comas
+
+ejemplo curl para traer una ruta
+curl -X POST "http://localhost/ws_agua/webservice.php" -F 'a=1' -F 'b=3j' -F 'r=21' >$destino
+
+ejemplo curl para traer 2 o mas rutas
+curl -X POST "http://localhost/ws_agua/webservice.php" -F 'a=1' -F 'b=3j' -F 'r=1,2,3' >$destino
+
+
+simulacion de datos que envia la apk
+curl -X POST "http://localhost/ws_agua/webservice.php" -d @ejemplo_envio.json
+
+
+

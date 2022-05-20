@@ -113,6 +113,7 @@ log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."pasa verifica regi
 
 
 if($rows>0){
+	log_this("log/import".date("Ym").".log",date("Y-m-d |H:i:s")." | YA EXISTE ID_MED: |".$data["ID_MED"]."| PERIODO: |".$data["PERIODO"]."|\n");
 			$array=array(	
 				"MODULO" => "AGUA",
 				"ACCION" => "EXPORT_DATA",
@@ -153,6 +154,7 @@ if($rows>0){
 #------------------------------------------------------------------
 //no existe registro
 if($rows<1){
+	log_this("log/import".date("Ym").".log",date("Y-m-d |H:i:s")." | NO EXISTE ID_MED: |".$data["ID_MED"]."| PERIODO: |".$data["PERIODO"]."|\n");
 	log_this("log/ws_a1_b16j".date("Ym").".log", date("d H:i:s")."no existe registro inserta\n");
 	$SQL = "INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 

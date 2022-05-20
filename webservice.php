@@ -22,8 +22,10 @@ $buffer = "";
 
 
 
+if (file_exists("./log/webservice.log")) {
+    unlink("./log/webservice.log");
+}
 
-unlink("log/webservice.log");
 
 log_this("log/request.log",date("d H:i:s")."\narr_request\n".print_r($_REQUEST,true));
 try {
