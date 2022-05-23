@@ -23,7 +23,7 @@ curl -X POST "http://localhost/ws_agua/webservice.php" -F 'a=1' -F 'b=3j' -F 'r=
 
 
 simulacion de datos que envia la apk
-curl -X POST "http://localhost/ws_agua/webservice.php" -d @ejemplo_envio.json
+curl -X POST "http://localhost/ws_agua/webservice.php" -d @ejemplo_envio.json 
 
 
 
