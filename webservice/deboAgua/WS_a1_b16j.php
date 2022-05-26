@@ -120,12 +120,9 @@ if($rows>0){
 
 
 
-
-
-
 #-------------------------------------------------------------------
 $residente=medidor_trae_residente($CONEXION, $data["ID_MED"]);
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa trae residente $residente id_med: $data["ID_MED"]\n");
+log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa trae residente $residente id_med: ".$data["ID_MED"]."\n");
 
 
 $datos_residente=trae_datos_residente($CONEXION, $residente);
