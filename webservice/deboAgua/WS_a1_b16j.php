@@ -165,7 +165,7 @@ if($rows<1){
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
 					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
 
-	log_this("log/sql".date("Y-m").".log",$SQL."\n\n");
+	log_this("log/sql".date("Ym").".log",date("Ymd H:i:s")." a1b16j ".$SQL."\n\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
 
 	if(sqlsrv_errors()){
@@ -178,10 +178,10 @@ if($rows<1){
 	sqlsrv_commit($CONEXION);
 
 	
-	log_this("log/sql".date("Y-m").".log",date("Y-m-d H:i:s ")." affected ".$affected." -\n");
+	log_this("log/sql".date("Ym").".log",date("Ymd H:i:s ")." affected ".$affected." -\n");
 
 	if(!isset($result)){
-		log_this("log/sql".date("Y-m").".log",date("Y-m-d H:i:s").' - error insertar ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].' \n');
+		log_this("log/sql".date("Ym").".log",date("Ymd H:i:s").' - error insertar ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].' \n');
 		/* agregar id_table y N de serie tablet		*/
 		$array=array(	
 			"MODULO" => "AGUA",
@@ -200,7 +200,7 @@ if($rows<1){
 
 
 	if(isset($result)){
-		log_this("log/sql".date("Y-m").".log",date("Y-m-d H:i:s").'se inserto correctamente - ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].'\n');
+		log_this("log/sql".date("Ym").".log",date("Ymd H:i:s").'se inserto correctamente - ID_MED - '.$data["ID_MED"].' - periodo - '.$data["PERIODO"].'\n');
 		/* agregar id_table y N de serie tablet		*/
 			$array=array(	
 				"MODULO" => "AGUA",

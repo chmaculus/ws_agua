@@ -35,7 +35,7 @@ try {
 
     if($data){
         
-        log_this("log/json_raw".date("Ym").".json",date("Ymd H:i:s")."\n".file_get_contents('php://input')."\n");
+        log_this("log/json_raw".date("Ym").".json",date("Ymd|H:i:s")."|".file_get_contents('php://input')."\n");
         //log_this("log/data.log",print_r($data,TRUE));
         if($data["MODULO"]=="AGUA"){
             if($data["ACCION"]=="EXPORT_DATA"){
@@ -491,18 +491,18 @@ try {
 
 
 
-    $name_file = "log\\log_" . date("Y-m") . ".txt";
+    $name_file = "log/log_" . date("Y-m") . ".log";
 
     if (file_exists("log\\") == false) {
         mkdir("log\\", 0777);
     }
 
     $file = fopen($name_file, "a+");
-    fwrite($file, $RETURN);
+    fwrite($file, date("Ymd H:i:s")." ".$RETURN."\n");
     fclose($file);
 } catch (Exception $e) {
 
-    $name_file = ".\\errors\\error_report_" . date("Y-m") . ".txt";
+    $name_file = "./errors/error_report_" . date("Y-m") . ".txt";
     $file = fopen($name_file, "w+");
     fwrite($file, "PHP says: " . $e . "<br /><br />" . $ERROR);
     fclose($file);

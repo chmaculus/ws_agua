@@ -10,7 +10,7 @@
 
 		// Buscamos las rutas que mostrar:
 			$SQL = "SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(". $rutas .") ORDER BY RUTA,ORDEN,per desc";
-			log_this("log/sql".date("Ym"),"WS_a1_b3j: ".$SQL."\n");
+			log_this("log/sql".date("Ym").".log",date("Ymd|H:i:s")".WS_a1_b3j: ".$SQL."\n");
 		$VI_AGUA_A_TABLET = sqlsrv_query($CONEXION, $SQL, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 		if(!isset($VI_AGUA_A_TABLET)){
@@ -165,7 +165,7 @@
 					sqlsrv_free_stmt($VI_AGUA_A_TABLET);
 					$arr_rtn=array('CNT'=> $entradas, 'MEDICION' => $array_medicion, 'ERR' => $array_error);
 					$RETURN=json_encode($arr_rtn);
-					log_this("log/ws_a1_b3j".date("Ym").".log",date("d H:i:s")."\n".$RETURN);
+					log_this("log/ws_a1_b3j".date("Ym").".log",date("Y-m-d H:i:s")."|".$RETURN);
 					//$RETURN = utf8_encode($RETURN);
 						
 				// Recuperamos el numero de la tablet que hizo este pedido, asi se marca en la BDD que esta tablet se llevo estas rutas:
@@ -182,7 +182,7 @@
 				
 			}//end while
 			
-			  log_this("log/ws_a1_b3j_return".date("Ym").".log",date("H:i:s")."\n".print_r($RETURN,true)."\n\n");
+			  log_this("log/ws_a1_b3j_return".date("Ym").".log",date("Ymd|H:i:s")."|".print_r($RETURN,true)."\n\n");
 			 // log_this("log/ws_a1_b3j_medicion.log",date("H:i:s")."\n".print_r($array_medicion,true)."\n\n");
 			 // log_this("log/ws_a1_b3j_error.log",date("H:i:s")."\n".print_r($array_error,true)."\n\n");
 
