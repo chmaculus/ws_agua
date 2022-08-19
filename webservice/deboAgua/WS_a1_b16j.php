@@ -129,7 +129,11 @@ $datos_residente=trae_datos_residente($CONEXION, $residente);
 log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa trae trae_datos_residente\n");
 
 log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."genera nombre res: $residente  id_med: ".$data["ID_MED"]." periodo: ".$data["PERIODO"]." \n");
-$nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
+if($data["IMAGEN"]!=""){
+	$nombre=genera_nombre($residente, $data["ID_MED"], $data["PERIODO"]);
+}else{
+	$imagen="";
+}
 //$nombre_png=str_replace(".jpg",".png",$nombre);
 log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-Y-m-d H:i:s")."pasa genera nombre $nombre \n");
 #-------------------------------------------------------------------
@@ -157,15 +161,20 @@ log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-Y-m-d H:i:s")."pasa gener
 #------------------------------------------------------------------
 //no existe registro
 if($rows<1){
+	$lean=trae_lean($CONEXION, $data["ID_MED"]);
+	log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."array trae_lean".print_r($lean,true)."\n");
+
+
 	log_this("log/import".date("Ym").".log",date("Y-m-d |H:i:s")." | NO EXISTE ID_MED: |".$data["ID_MED"]."| PERIODO: |".$data["PERIODO"]."|\n");
 	log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."no existe registro inserta\n");
 	$SQL = "INSERT INTO AGUA_MEDICION 
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
-				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$data['LEAN']."', '".$data['LEAC']."', -1, '".$string_fecha."', 
+				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$lean[0]."', '".$data['LEAC']."', -1, '".$string_fecha."', 
 					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
 
 	log_this("log/sql".date("Ym").".log",date("Ymd H:i:s")." a1b16j ".$SQL."\n\n");
+	log_this("log/insert.sql",$SQL.";\n");
 	$result = sqlsrv_query( $CONEXION, $SQL);
 
 	if(sqlsrv_errors()){
@@ -301,6 +310,7 @@ exit;
 
 	
 // #------------------------------------------------------------------
+// actualizar registro anulad a pedido del cliente
 // //ya existe el registro. actualizo
 // if($rows>0){
 // 	log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."existe registro actualiza\n");
