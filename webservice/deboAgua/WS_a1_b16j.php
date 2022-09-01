@@ -155,6 +155,9 @@ log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-Y-m-d H:i:s")."pasa gener
 
 
 
+if($data["IMAGEN"]!=""){
+	$nombre_imagen=$path.$nombre;
+}
 
 
 
@@ -171,7 +174,7 @@ if($rows<1){
 				(ID_MED, PER, LEAN, LEAC, VAL, FECHA_TOMA, ID_ERROR, OBSERVACION, ID_OPE, MODO, AUTORIZADO, PATH_FOTO) 
 			VALUES 
 				('".$data["ID_MED"]."', '".$data["PERIODO"]."', '".$lean[0]."', '".$data['LEAC']."', -1, '".$string_fecha."', 
-					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$path.$nombre."')";
+					'".$data['ID_ERROR']."', '".$data['OBSERVACION']."', '".$data['ID_OPE']."', 'A', '0', '".$nombre_imagen."')";
 
 	log_this("log/sql".date("Ym").".log",date("Ymd H:i:s")." a1b16j ".$SQL."\n\n");
 	log_this("log/insert.sql",$SQL.";\n");
@@ -242,47 +245,49 @@ if($rows<1){
 log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."inicio graba temp\n");
 #-------------------------------------------------------------------
 ///graba temporal imagen
-$imagen=base64_decode($data["IMAGEN"]);
+if($data["IMAGEN"]!=""){
 
-$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
+		$imagen=base64_decode($data["IMAGEN"]);
+		$nom_temp="./tmp/temp".crc32(rand(100,10000000)).".jpg";
 
-$gestor = fopen($nom_temp, 'w');
-if (fwrite($gestor, $imagen) === FALSE) {
-	fclose($gestor);
-	$file_write=0;
-		$array=array(	
-			"MODULO" => "AGUA",
-			"ACCION" => "EXPORT_DATA",
-			"ID_MED" => '"'.$data["ID_MED"].'"',
-			"PERIODO" => '"'.$data["PERIODO"].'"',
-			"CODIGO" => "4",
-			"ERROR" => "Error al grabar archivo temporal",
-			"MENSAJE" => "Error al grabar archivo temporal"
-		);
-		log_this("log/ws_a1_b16j".date("Ym").".log",date("Y-m-d H:i:s")."error al grabar temporal\n");
-		echo json_encode($array);
-			exit;
-}else{
-	log_this("log/ws_a1_b16j".date("Ym").".log",date("Y-m-d H:i:s")."temporal almacenado OK\n");
-	fclose($gestor);
-	$file_write=1;
+		$gestor = fopen($nom_temp, 'w');
+		if (fwrite($gestor, $imagen) === FALSE) {
+			fclose($gestor);
+			$file_write=0;
+				$array=array(	
+					"MODULO" => "AGUA",
+					"ACCION" => "EXPORT_DATA",
+					"ID_MED" => '"'.$data["ID_MED"].'"',
+					"PERIODO" => '"'.$data["PERIODO"].'"',
+					"CODIGO" => "4",
+					"ERROR" => "Error al grabar archivo temporal",
+					"MENSAJE" => "Error al grabar archivo temporal"
+				);
+				log_this("log/ws_a1_b16j".date("Ym").".log",date("Y-m-d H:i:s")."error al grabar temporal\n");
+				echo json_encode($array);
+					exit;
+		}else{
+			log_this("log/ws_a1_b16j".date("Ym").".log",date("Y-m-d H:i:s")."temporal almacenado OK\n");
+			fclose($gestor);
+			$file_write=1;
+		}
+		$imagen="";
+		#-------------------------------------------------------------------
+		log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."fin graba temp\n");
+
+
+		log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
+		estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
+		log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa estampar\n");
+
+
+
+
+
+		#elimino temporal
+		log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."elimina temporal\n");
+		unlink($nom_temp);
 }
-$imagen="";
-#-------------------------------------------------------------------
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."fin graba temp\n");
-
-
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."estampa datos nom_temp: $nom_temp path: $path.$nombre ftoma: ".$data["FECHA_TOMA"]." htoma: ".$data["HORA_TOMA"]." mzna: ".$datos_residente["MZNA"]."  casa: ".$datos_residente["CASA"]." \n");
-estampar($nom_temp, $path.$nombre, $data["FECHA_TOMA"], $data["HORA_TOMA"], $datos_residente["MZNA"], $datos_residente["CASA"]);
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."pasa estampar\n");
-
-
-
-
-
-#elimino temporal
-log_this("log/ws_a1_b16j".date("Ym").".log", date("Y-m-d H:i:s")."elimina temporal\n");
-unlink($nom_temp);
 #------------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
