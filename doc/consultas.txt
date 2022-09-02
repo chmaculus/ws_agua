@@ -1,0 +1,87 @@
+
+consulta vi_agua_a_tablet
+SELECT
+	TOP (100) PERCENT B.ID AS ID_MED,
+	B.NUM AS NUM_MED,
+	B.MOD AS MOD_MED,
+	A.COD,
+	A.DNI,
+	A.NOM,
+	A.CALLE,
+	A.NUMERO,
+	A.MZNA,
+	A.CASA,
+	A.PISO,
+	A.DEPTO,
+	A.TORRE,
+	A.RTA_TOA AS RUTA,
+	A.ORD_TOA AS ORDEN,
+	C.TEL,
+	(
+	SELECT
+		MAX(PER) AS PERIODO
+	FROM
+		dbo.AGUA_MEDICION AS C
+	WHERE
+		(ID_MED = B.ID)
+	GROUP BY
+		ID_MED) AS PER,
+	(
+	SELECT
+		AVG(LEAC - LEAN) AS CONSUMO
+	FROM
+		dbo.AGUA_MEDICION AS C
+	WHERE
+		(ID_MED = B.ID)
+	GROUP BY
+		ID_MED) AS PROMEDIO,
+	(
+	SELECT
+		MAX(LEAN) AS LEAN
+	FROM
+		dbo.AGUA_MEDICION AS C
+	WHERE
+		(ID_MED = B.ID)
+			AND (PER =
+                                                             (
+			SELECT
+				MAX(PER) AS PERIODO
+			FROM
+				dbo.AGUA_MEDICION AS C
+			WHERE
+				(ID_MED = B.ID)
+			GROUP BY
+				ID_MED))
+		GROUP BY
+			ID_MED) AS LEAN,
+	(
+	SELECT
+		MAX(LEAC) AS LEAC
+	FROM
+		dbo.AGUA_MEDICION AS C
+	WHERE
+		(ID_MED = B.ID)
+			AND (PER =
+                                                             (
+			SELECT
+				MAX(PER) AS PERIODO
+			FROM
+				dbo.AGUA_MEDICION AS C
+			WHERE
+				(ID_MED = B.ID)
+			GROUP BY
+				ID_MED))
+		GROUP BY
+			ID_MED) AS LEAC
+FROM
+	dbo.AGUA_MEDIDOR AS B
+INNER JOIN dbo.CLIENTES AS A ON
+	A.COD = B.COD_RES
+INNER JOIN dbo.RESIDENTES AS C ON
+	A.COD = C.COD_RES
+	AND C.COD_HAB = 1;
+
+
+
+/* consulta que hace a la vista*/
+SELECT * FROM VI_AGUA_A_TABLET WHERE RUTA IN(1,2,3) ORDER BY RUTA,ORDEN,per desc
